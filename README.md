@@ -4,14 +4,14 @@
 
 **URL:** https://kueno07.github.io/agente-biografico/  
 **Repositório:** https://github.com/Kueno07/agente-biografico  
-**Autor:** Kelvin Okuda — Netzsch  
+**Autor:** Kelvin Okuda  
 **Status:** Em desenvolvimento ativo (Mai/2025)
 
 ---
 
 ## Contexto
 
-Projeto desenvolvido para uma apresentação interna de 2 semanas na Netzsch, com dois objetivos:
+Projeto desenvolvido para uma apresentação de 2 semanas para um time, com dois objetivos:
 
 1. **Reflexão sobre legado e memória** — apresentar a brevidade da vida e o esquecimento geracional como motivação para preservar histórias
 2. **Demonstração prática de IA** — mostrar ao time o que é possível construir com LLMs, promovendo adoção interna de IA
@@ -261,7 +261,7 @@ Estrutura de capítulos:
 8. Mensagem para as próximas gerações
 
 Contexto maior:
-Apresentação interna de 2 semanas na Netzsch (empresa alemã de equipamentos industriais).
+Apresentação de 2 semanas para um time.
 Semana 1: reflexão sobre brevidade da vida + esquecimento geracional + demo + arquitetura.
 Semana 2: entrega dos DOCXs individuais + dados agregados/anônimos + aprendizados.
 Objetivo secundário: promover adoção de IA no time.
