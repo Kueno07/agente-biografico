@@ -1,5 +1,7 @@
 # Agente Biográfico
 
+> **In English:** a single-file web app that asks a person questions about their life, follows up each answer with an AI-generated question, and builds a memoir as a DOCX file. There is no backend: it runs in the browser and calls the AI provider you choose, with your own API key. The rest of this page is in Portuguese.
+
 > Aplicação web que conduz uma pessoa por perguntas sobre sua vida e gera um livro autobiográfico em DOCX ao final.
 
 **URL:** https://kueno07.github.io/agente-biografico/  
