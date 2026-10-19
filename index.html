@@ -383,6 +383,25 @@
     .chap-num { font-family: 'Lora', serif; font-weight: 600; color: var(--amber); min-width: 1.4rem; }
     .chap-done { color: var(--success); font-weight: 600; font-size: .78rem; margin-left: auto; }
 
+    /* ── Manuscript review ──────────────────────────────── */
+    .review-intro { color: var(--ink-mid); margin: .5rem 0 1.5rem; }
+    .review-meta { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+    .review-meta label, .review-chapter label { display: block; font-size: .78rem; font-weight: 600; color: var(--ink-mid); margin-bottom: .35rem; }
+    .review-meta input, .review-meta textarea, .review-chapter textarea {
+      width: 100%; border: 1px solid var(--parchment); border-radius: 8px;
+      background: #fff; color: var(--ink); font: inherit; padding: .75rem .85rem;
+    }
+    .review-meta textarea { min-height: 90px; resize: vertical; }
+    .review-chapter { margin: 1rem 0; padding: 1.25rem; border: 1px solid var(--parchment); border-radius: var(--radius); background: #fff; }
+    .review-chapter h3 { font-family: 'Lora', serif; color: var(--ink); font-size: 1.15rem; margin-bottom: .75rem; }
+    .review-chapter textarea { min-height: 230px; resize: vertical; line-height: 1.75; }
+    .review-chapter-actions { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-top: .75rem; }
+    .review-hint { color: var(--ink-light); font-size: .78rem; }
+    .review-sources { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--parchment); color: var(--ink-mid); font-size: .86rem; }
+    .review-sources summary { cursor: pointer; font-weight: 600; }
+    .review-source-item { margin-top: .8rem; white-space: pre-wrap; }
+    .review-error { color: var(--red-warn); font-size: .88rem; margin: .5rem 0; }
+
     /* ── Photo upload ───────────────────────────────────── */
     .photo-upload-area {
       border: 2px dashed var(--parchment);
@@ -548,13 +567,14 @@ const LANGS = {
     flag: '🇧🇷', label: 'Português',
     ui: {
       appTitle: 'Agente Biográfico',
-      appSubtitle: 'Conte a sua história. Preserve para sempre.',
+      appSubtitle: 'Conte sua história. Revise cada capítulo. Monte seu livro.',
       step0Title: 'Bem-vindo',
-      step0Intro: 'Este agente vai guiá-lo por perguntas sobre sua vida e gerar um livro de memórias em formato Word (DOCX) ao final.',
+      step0Intro: 'Responda às perguntas no seu ritmo. Depois, revise cada capítulo e escolha o título e a dedicatória antes de montar seu livro em Word (DOCX).',
       providerLabel: 'Provedor de IA',
       apiKeyLabel: 'Chave de API',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'A chave fica apenas na memória desta página. Suas respostas são enviadas diretamente ao provedor escolhido para gerar perguntas e o livro. Consulte os termos do provedor.',
+      apiConsentLabel: 'Entendo que minhas respostas serão enviadas ao provedor selecionado quando eu pedir aprofundamentos e gerar o livro. Vou conferir as condições e possíveis custos.',
       getKeyLabel: 'Criar ou consultar chave no provedor',
       authorNameLabel: 'Seu nome completo',
       authorNamePlaceholder: 'Como você quer ser identificado no livro',
@@ -570,8 +590,26 @@ const LANGS = {
       aiAsksLabel: 'A IA PERGUNTA',
       yourAnswerLabel: 'SUA RESPOSTA',
       chaptersProgress: 'Capítulos concluídos',
+      reviewTitle: 'Revise o texto do seu livro',
+      chapterTextLabel: 'Texto do capítulo',
+      contentsTitle: 'Sumário',
+      contentsUpdateHint: 'Se o sumário não aparecer, atualize os campos ao abrir no Word.',
+      reviewIntro: 'Leia cada capítulo com calma. Corrija fatos, nomes e trechos que não soem como você antes de montar o documento.',
+      draftSavedLabel: 'Rascunho salvo neste navegador.',
+      draftSaveError: 'Não foi possível salvar o rascunho local. Baixe um backup JSON para não perder suas edições.',
+      bookTitleLabel: 'Título do livro',
+      bookSubtitleLabel: 'Subtítulo (opcional)',
+      dedicationLabel: 'Dedicatória (opcional)',
+      dedicationPlaceholder: 'Escreva para quem ou para que este livro é dedicado',
+      sourcesLabel: 'Respostas usadas neste capítulo',
+      regenerateChapter: 'Reescrever capítulo',
+      regenerateWorking: 'Reescrevendo…',
+      regenerateError: 'Não foi possível reescrever este capítulo. O texto editado foi preservado.',
+      createBook: 'Montar o livro',
+      assemblyError: 'Não foi possível montar o documento. Seus textos continuam disponíveis nesta página.',
+      reviewChapterHint: 'O texto continua editável depois de baixar o DOCX.',
       finalTitle: 'Seu livro está pronto.',
-      finalMessage: 'Cada palavra aqui é parte de quem você é. O arquivo DOCX está pronto — você pode editá-lo, imprimir e entregar para quem você ama.',
+      finalMessage: 'O DOCX foi montado com os capítulos que você revisou. Você ainda pode editar, imprimir e compartilhar o arquivo.',
       errorApiKey: 'Por favor, insira sua chave de API.',
       errorName: 'Por favor, insira seu nome.',
       errorApi: 'Erro na API: ',
@@ -580,6 +618,8 @@ const LANGS = {
       of: 'de',
       backupFound: 'Sessão salva encontrada',
       backupRestore: 'Restaurar',
+      backupDelete: 'Apagar sessão salva',
+      backupDeleteConfirm: 'Apagar respostas e rascunhos salvos neste navegador? Esta ação não pode ser desfeita.',
       coverTitle: 'Capa do livro',
       coverNone: 'Sem capa',
       coverGenerate: '🎨 Gerar capa com IA',
@@ -596,43 +636,43 @@ const LANGS = {
     chapters: [
       { title: 'De onde eu vim',
         questions: [
-          'Feche os olhos e pense na casa onde você cresceu. O que você vê, ouve ou sente quando está lá?',
-          'Quem era a pessoa que mais te definiu nessa fase da vida — e o que ela te passou sem precisar dizer com palavras?'
+          'Qual lugar, pessoa ou rotina representa melhor o começo da sua história? Conte uma cena concreta que você lembra.',
+          'Que pessoa ou experiência influenciou seu jeito de ver o mundo nessa época? O que você recorda dela?'
         ]},
       { title: 'Infância: o que ficou',
         questions: [
           'Qual é a memória da infância que você nunca esqueceu — aquela que aparece sem avisar?',
-          'O que você tinha na infância que as crianças de hoje dificilmente vão ter?'
+          'Como era um dia comum para você? Que pequenos detalhes ajudam a imaginar aquela época?'
         ]},
       { title: 'Quem eu era aos 20',
         questions: [
-          'Como era você aos 18, 20 anos — o que você queria, o que você temia, quem você achava que ia ser?',
-          'Qual foi a primeira grande escolha que você fez por conta própria — e o que você sacrificou por ela?'
+          'Como era sua vida no começo da vida adulta? O que você queria naquele momento e o que acabou acontecendo?',
+          'Que escolha ou mudança desse período ainda tem significado para você? O que consegue lembrar daquele momento?'
         ]},
       { title: 'O que eu construí',
         questions: [
-          'Quando você olha para tudo que trabalhou na vida, o que você vê que vai além do salário ou do cargo?',
-          'Houve um dia, uma entrega, um projeto — em que você pensou "foi para isso que eu vim". O que foi?'
+          'Que trabalho, cuidado, projeto ou responsabilidade ocupou uma parte importante da sua vida? Conte uma situação que mostre como era.',
+          'O que você construiu ou ajudou a construir e gostaria que ficasse registrado? Que lembrança concreta representa isso?'
         ]},
-      { title: 'Quem eu amei',
+      { title: 'Laços que me acompanharam',
         questions: [
-          'Há uma pessoa — além dos seus pais — que mudou quem você é de forma permanente. Quem é ela e o que ela fez?',
-          'O amor te ensinou algo que você não esperava aprender. O que foi?'
+          'Que relação teve presença importante na sua vida? Conte uma lembrança que mostre o que essa relação significava para você.',
+          'O que você aprendeu sobre afeto, amizade ou cuidado ao longo da vida? Alguma experiência mudou sua maneira de entender isso?'
         ]},
-      { title: 'O que me quebrou e me fez',
+      { title: 'Mudanças e desafios',
         questions: [
-          'Houve um momento em que tudo parecia desmoronar — uma perda, uma traição, uma falha. O que foi e como você atravessou?',
-          'Olhando para trás, qual erro ou fracasso você é secretamente grato por ter vivido?'
+          'Se quiser, conte sobre uma fase difícil, mudança ou desafio que marcou sua vida. O que aconteceu e o que ajudou você naquele período?',
+          'Há algo que hoje você compreende de outro jeito? O que mudou na sua visão com o passar do tempo?'
         ]},
       { title: 'O que acredito',
         questions: [
-          'Qual é a coisa mais importante que você aprendeu sobre como tratar as pessoas?',
-          'Se você pudesse colocar numa frase o que guiou sua vida — não o que você pregou, mas o que você realmente viveu — qual seria?'
+          'Que valor ou ideia orientou suas decisões? Conte uma situação em que isso apareceu na prática.',
+          'Há uma convicção que mudou com o tempo? O que fez você rever ou confirmar essa ideia?'
         ]},
       { title: 'O que deixo',
         questions: [
           'O que você quer que as pessoas que te amam lembrem de você — não pelo que você fez, mas por quem você foi?',
-          'Tem algo que você nunca disse — para alguém, ou para si mesmo — que quer deixar escrito aqui?'
+          'Há alguma história, detalhe ou correção que ainda não apareceu e que você gostaria de deixar registrado?'
         ]},
     ],
   },
@@ -641,13 +681,14 @@ const LANGS = {
     flag: '🇺🇸', label: 'English',
     ui: {
       appTitle: 'Biographical Agent',
-      appSubtitle: 'Tell your story. Preserve it forever.',
+      appSubtitle: 'Tell your story. Review each chapter. Shape your book.',
       step0Title: 'Welcome',
-      step0Intro: 'This agent will guide you through questions about your life and generate a memoir in Word (DOCX) format at the end.',
+      step0Intro: 'Answer at your own pace. Then review every chapter and choose a title and dedication before assembling your memoir in Word (DOCX).',
       providerLabel: 'AI Provider',
       apiKeyLabel: 'API Key',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Your key stays in this page memory. Your answers are sent directly to the selected provider to generate questions and the book. Check the provider terms.',
+      apiConsentLabel: 'I understand my answers will be sent to the selected provider when I request follow-up questions and generate the book. I will check its terms and possible costs.',
       getKeyLabel: 'Create or manage a key with the provider',
       authorNameLabel: 'Your full name',
       authorNamePlaceholder: 'As you want to appear in the book',
@@ -663,8 +704,26 @@ const LANGS = {
       aiAsksLabel: 'AI ASKS',
       yourAnswerLabel: 'YOUR ANSWER',
       chaptersProgress: 'Chapters completed',
+      reviewTitle: 'Review your book',
+      chapterTextLabel: 'Chapter text',
+      contentsTitle: 'Contents',
+      contentsUpdateHint: 'If the table is blank, update fields after opening the document in Word.',
+      reviewIntro: 'Read each chapter carefully. Correct facts, names, and passages that do not sound like you before assembling the document.',
+      draftSavedLabel: 'Draft saved in this browser.',
+      draftSaveError: 'The local draft could not be saved. Download a JSON backup to protect your edits.',
+      bookTitleLabel: 'Book title',
+      bookSubtitleLabel: 'Subtitle (optional)',
+      dedicationLabel: 'Dedication (optional)',
+      dedicationPlaceholder: 'Write who or what this book is dedicated to',
+      sourcesLabel: 'Answers used for this chapter',
+      regenerateChapter: 'Rewrite chapter',
+      regenerateWorking: 'Rewriting…',
+      regenerateError: 'This chapter could not be rewritten. Your edited text was preserved.',
+      createBook: 'Assemble the book',
+      assemblyError: 'The document could not be assembled. Your text is still available on this page.',
+      reviewChapterHint: 'You can keep editing the text after downloading the DOCX.',
       finalTitle: 'Your book is ready.',
-      finalMessage: 'Every word here is a part of who you are. The DOCX file is ready — edit it, print it, and give it to the people you love.',
+      finalMessage: 'The DOCX was assembled from the chapters you reviewed. You can still edit, print, and share the file.',
       errorApiKey: 'Please enter your API key.',
       errorName: 'Please enter your name.',
       errorApi: 'API error: ',
@@ -673,6 +732,8 @@ const LANGS = {
       of: 'of',
       backupFound: 'Saved session found',
       backupRestore: 'Restore',
+      backupDelete: 'Delete saved session',
+      backupDeleteConfirm: 'Delete the answers and drafts saved in this browser? This cannot be undone.',
       coverTitle: 'Book cover',
       coverNone: 'No cover yet',
       coverGenerate: '🎨 Generate cover with AI',
@@ -689,43 +750,43 @@ const LANGS = {
     chapters: [
       { title: 'Where I came from',
         questions: [
-          'Close your eyes and think of the house where you grew up. What do you see, hear, or feel when you are there?',
-          'Who was the person who defined you most during that time — and what did they pass on to you without needing words?'
+          'What place, person, or routine best represents the beginning of your story? Describe a concrete scene you remember.',
+          'What person or experience influenced how you saw the world then? What do you remember about it?'
         ]},
       { title: 'Childhood: what stayed',
         questions: [
           'What is the childhood memory you have never forgotten — the one that comes back without warning?',
-          'What did you have in childhood that children today will rarely have?'
+          'What was an ordinary day like for you? Which small details help bring that time to mind?'
         ]},
       { title: 'Who I was at 20',
         questions: [
-          'What were you like at 18, 20 years old — what did you want, what did you fear, who did you think you would become?',
-          'What was the first major choice you made on your own — and what did you sacrifice for it?'
+          'What was your life like in early adulthood? What did you want then, and what eventually happened?',
+          'What choice or change from that period still matters to you? What do you remember about that moment?'
         ]},
       { title: 'What I built',
         questions: [
-          'When you look at everything you have worked for in life, what do you see that goes beyond salary or title?',
-          'Was there a day, a project, a moment — when you thought "this is what I came here for." What was it?'
+          'What work, care, project, or responsibility took up an important part of your life? Describe a situation that shows what it was like.',
+          'What did you build or help build that you would like to record? What concrete memory represents it?'
         ]},
-      { title: 'Who I loved',
+      { title: 'Relationships that stayed with me',
         questions: [
-          'There is one person — beyond your parents — who permanently changed who you are. Who are they and what did they do?',
-          'Love taught you something you did not expect to learn. What was it?'
+          'Which relationship played an important part in your life? Describe a memory that shows what it meant to you.',
+          'What have you learned about affection, friendship, or care over the years? Did an experience change how you understand it?'
         ]},
-      { title: 'What broke me and made me',
+      { title: 'Changes and challenges',
         questions: [
-          'There was a moment when everything seemed to be falling apart — a loss, a betrayal, a failure. What was it and how did you get through it?',
-          'Looking back, which mistake or failure are you secretly grateful you lived through?'
+          'If you wish, tell me about a difficult period, change, or challenge that shaped your life. What happened, and what helped you through it?',
+          'Is there something you understand differently now? How has your perspective changed over time?'
         ]},
       { title: 'What I believe',
         questions: [
-          'What is the most important thing you have learned about how to treat people?',
-          'If you could put into one sentence what truly guided your life — not what you preached, but what you actually lived — what would it be?'
+          'What value or idea guided your decisions? Describe a situation where it showed up in practice.',
+          'Is there a belief that changed over time? What made you reconsider or confirm it?'
         ]},
       { title: 'What I leave behind',
         questions: [
           'What do you want the people who love you to remember about you — not for what you did, but for who you were?',
-          'Is there something you never said — to someone, or to yourself — that you want to leave written here?'
+          'Is there a story, detail, or correction that has not come up yet and that you would like to leave on record?'
         ]},
     ],
   },
@@ -734,13 +795,14 @@ const LANGS = {
     flag: '🇩🇪', label: 'Deutsch',
     ui: {
       appTitle: 'Biographischer Agent',
-      appSubtitle: 'Erzählen Sie Ihre Geschichte. Bewahren Sie sie für immer.',
+      appSubtitle: 'Erzählen Sie Ihre Geschichte. Prüfen Sie jedes Kapitel. Gestalten Sie Ihr Buch.',
       step0Title: 'Willkommen',
-      step0Intro: 'Dieser Agent führt Sie durch Fragen über Ihr Leben und erstellt am Ende ein Erinnerungsbuch im Word-Format (DOCX).',
+      step0Intro: 'Beantworten Sie die Fragen in Ihrem Tempo. Prüfen Sie anschließend jedes Kapitel und wählen Sie Titel und Widmung für Ihr Erinnerungsbuch im Word-Format (DOCX).',
       providerLabel: 'KI-Anbieter',
       apiKeyLabel: 'API-Schlüssel',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Ihr Schlüssel bleibt im Arbeitsspeicher dieser Seite. Ihre Antworten werden direkt an den gewählten Anbieter gesendet, um Fragen und das Buch zu erstellen. Bitte prüfen Sie dessen Bedingungen.',
+      apiConsentLabel: 'Mir ist bewusst, dass meine Antworten an den ausgewählten Anbieter gesendet werden, wenn ich Vertiefungsfragen anfordere und das Buch erstelle. Ich prüfe dessen Bedingungen und mögliche Kosten.',
       getKeyLabel: 'Schlüssel beim Anbieter erstellen oder verwalten',
       authorNameLabel: 'Ihr vollständiger Name',
       authorNamePlaceholder: 'Wie Sie im Buch erscheinen möchten',
@@ -756,8 +818,26 @@ const LANGS = {
       aiAsksLabel: 'KI FRAGT',
       yourAnswerLabel: 'IHRE ANTWORT',
       chaptersProgress: 'Abgeschlossene Kapitel',
+      reviewTitle: 'Überprüfen Sie Ihr Buch',
+      chapterTextLabel: 'Kapiteltext',
+      contentsTitle: 'Inhalt',
+      contentsUpdateHint: 'Falls das Verzeichnis leer ist, aktualisieren Sie die Felder nach dem Öffnen in Word.',
+      reviewIntro: 'Lesen Sie jedes Kapitel in Ruhe. Korrigieren Sie Fakten, Namen und Formulierungen, die nicht nach Ihnen klingen, bevor Sie das Dokument erstellen.',
+      draftSavedLabel: 'Entwurf in diesem Browser gespeichert.',
+      draftSaveError: 'Der lokale Entwurf konnte nicht gespeichert werden. Laden Sie eine JSON-Sicherung herunter.',
+      bookTitleLabel: 'Buchtitel',
+      bookSubtitleLabel: 'Untertitel (optional)',
+      dedicationLabel: 'Widmung (optional)',
+      dedicationPlaceholder: 'Für wen oder was ist dieses Buch bestimmt?',
+      sourcesLabel: 'Antworten für dieses Kapitel',
+      regenerateChapter: 'Kapitel neu schreiben',
+      regenerateWorking: 'Wird neu geschrieben…',
+      regenerateError: 'Das Kapitel konnte nicht neu geschrieben werden. Ihr bearbeiteter Text blieb erhalten.',
+      createBook: 'Buch erstellen',
+      assemblyError: 'Das Dokument konnte nicht erstellt werden. Ihre Texte sind auf dieser Seite weiterhin verfügbar.',
+      reviewChapterHint: 'Sie können den Text nach dem Herunterladen der DOCX-Datei weiter bearbeiten.',
       finalTitle: 'Ihr Buch ist fertig.',
-      finalMessage: 'Jedes Wort hier ist ein Teil von Ihnen. Die DOCX-Datei ist bereit — bearbeiten Sie sie, drucken Sie sie und geben Sie sie den Menschen, die Sie lieben.',
+      finalMessage: 'Die DOCX-Datei wurde aus den von Ihnen geprüften Kapiteln erstellt. Sie können sie weiter bearbeiten, drucken und teilen.',
       errorApiKey: 'Bitte geben Sie Ihren API-Schlüssel ein.',
       errorName: 'Bitte geben Sie Ihren Namen ein.',
       errorApi: 'API-Fehler: ',
@@ -766,6 +846,8 @@ const LANGS = {
       of: 'von',
       backupFound: 'Gespeicherte Sitzung gefunden',
       backupRestore: 'Wiederherstellen',
+      backupDelete: 'Gespeicherte Sitzung löschen',
+      backupDeleteConfirm: 'Möchten Sie die in diesem Browser gespeicherten Antworten und Entwürfe löschen? Dies kann nicht rückgängig gemacht werden.',
       coverTitle: 'Buchcover',
       coverNone: 'Noch kein Cover',
       coverGenerate: '🎨 Cover mit KI erstellen',
@@ -782,43 +864,43 @@ const LANGS = {
     chapters: [
       { title: 'Woher ich komme',
         questions: [
-          'Schließen Sie die Augen und denken Sie an das Haus, in dem Sie aufgewachsen sind. Was sehen, hören oder fühlen Sie, wenn Sie dort sind?',
-          'Wer war die Person, die Sie in dieser Phase am meisten geprägt hat — und was hat sie Ihnen vermittelt, ohne es in Worte zu fassen?'
+          'Welcher Ort, Mensch oder Alltag steht für den Anfang Ihrer Geschichte? Beschreiben Sie eine konkrete Szene, an die Sie sich erinnern.',
+          'Welche Person oder Erfahrung hat damals Ihre Sicht auf die Welt beeinflusst? Woran erinnern Sie sich?'
         ]},
       { title: 'Kindheit: was geblieben ist',
         questions: [
           'Welche Kindheitserinnerung haben Sie nie vergessen — die eine, die ungefragt zurückkommt?',
-          'Was hatten Sie in der Kindheit, das Kinder heute kaum noch haben werden?'
+          'Wie sah ein gewöhnlicher Tag für Sie aus? Welche kleinen Einzelheiten helfen, sich diese Zeit vorzustellen?'
         ]},
       { title: 'Wer ich mit 20 war',
         questions: [
-          'Wie waren Sie mit 18, 20 Jahren — was wollten Sie, was fürchteten Sie, wer glaubten Sie zu werden?',
-          'Was war die erste große Entscheidung, die Sie allein getroffen haben — und was haben Sie dafür geopfert?'
+          'Wie sah Ihr Leben zu Beginn des Erwachsenenalters aus? Was wollten Sie damals, und was geschah später?',
+          'Welche Entscheidung oder Veränderung aus dieser Zeit bedeutet Ihnen noch etwas? Woran erinnern Sie sich dabei?'
         ]},
       { title: 'Was ich aufgebaut habe',
         questions: [
-          'Wenn Sie auf alles blicken, wofür Sie in Ihrem Leben gearbeitet haben — was sehen Sie, das über Gehalt oder Titel hinausgeht?',
-          'Gab es einen Tag, ein Projekt, einen Moment — wo Sie dachten: „Dafür bin ich hier." Was war das?'
+          'Welche Arbeit, Fürsorge, welches Projekt oder welche Verantwortung nahm einen wichtigen Platz in Ihrem Leben ein? Beschreiben Sie eine konkrete Situation.',
+          'Was haben Sie aufgebaut oder mitgestaltet und möchten es festhalten? Welche konkrete Erinnerung steht dafür?'
         ]},
-      { title: 'Wen ich geliebt habe',
+      { title: 'Menschen, die mich begleitet haben',
         questions: [
-          'Es gibt eine Person — außer Ihren Eltern — die dauerhaft verändert hat, wer Sie sind. Wer ist das und was hat sie getan?',
-          'Die Liebe hat Ihnen etwas beigebracht, das Sie nicht erwartet hätten. Was war das?'
+          'Welche Beziehung spielte eine wichtige Rolle in Ihrem Leben? Beschreiben Sie eine Erinnerung, die zeigt, was sie für Sie bedeutete.',
+          'Was haben Sie im Laufe Ihres Lebens über Zuneigung, Freundschaft oder Fürsorge gelernt? Hat eine Erfahrung Ihre Sicht darauf verändert?'
         ]},
-      { title: 'Was mich gebrochen und gemacht hat',
+      { title: 'Veränderungen und Herausforderungen',
         questions: [
-          'Es gab einen Moment, in dem alles auseinanderzufallen schien — ein Verlust, ein Verrat, ein Scheitern. Was war das und wie haben Sie es überstanden?',
-          'Welchen Fehler oder welches Scheitern sind Sie im Nachhinein heimlich dankbar erlebt zu haben?'
+          'Wenn Sie möchten, erzählen Sie von einer schwierigen Zeit, Veränderung oder Herausforderung, die Ihr Leben geprägt hat. Was geschah, und was half Ihnen dabei?',
+          'Gibt es etwas, das Sie heute anders verstehen? Wie hat sich Ihre Sicht im Laufe der Zeit verändert?'
         ]},
       { title: 'Was ich glaube',
         questions: [
-          'Was ist das Wichtigste, das Sie darüber gelernt haben, wie man mit Menschen umgeht?',
-          'Wenn Sie in einem Satz ausdrücken könnten, was Ihr Leben wirklich geleitet hat — nicht was Sie gepredigt, sondern was Sie wirklich gelebt haben — was wäre das?'
+          'Welcher Wert oder Gedanke leitete Ihre Entscheidungen? Beschreiben Sie eine Situation, in der er sichtbar wurde.',
+          'Gibt es eine Überzeugung, die sich verändert hat? Was brachte Sie dazu, sie zu überdenken oder zu bestätigen?'
         ]},
       { title: 'Was ich hinterlasse',
         questions: [
           'Was sollen die Menschen, die Sie lieben, über Sie in Erinnerung behalten — nicht für das, was Sie getan haben, sondern für das, wer Sie waren?',
-          'Gibt es etwas, das Sie nie gesagt haben — zu jemandem oder zu sich selbst — das Sie hier schriftlich hinterlassen möchten?'
+          'Gibt es eine Geschichte, Einzelheit oder Korrektur, die noch nicht zur Sprache kam und die Sie festhalten möchten?'
         ]},
     ],
   },
@@ -827,13 +909,14 @@ const LANGS = {
     flag: '🇪🇸', label: 'Español',
     ui: {
       appTitle: 'Agente Biográfico',
-      appSubtitle: 'Cuenta tu historia. Consérvala para siempre.',
+      appSubtitle: 'Cuenta tu historia. Revisa cada capítulo. Prepara tu libro.',
       step0Title: 'Bienvenido',
-      step0Intro: 'Este agente te guiará a través de preguntas sobre tu vida y generará un libro de memorias en formato Word (DOCX) al final.',
+      step0Intro: 'Responde a tu ritmo. Después, revisa cada capítulo y elige el título y la dedicatoria antes de montar tu libro en Word (DOCX).',
       providerLabel: 'Proveedor de IA',
       apiKeyLabel: 'Clave de API',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Tu clave permanece en la memoria de esta página. Tus respuestas se envían directamente al proveedor elegido para generar preguntas y el libro. Consulta sus condiciones.',
+      apiConsentLabel: 'Entiendo que mis respuestas se enviarán al proveedor elegido cuando solicite preguntas de seguimiento y genere el libro. Consultaré sus condiciones y posibles costos.',
       getKeyLabel: 'Crear o administrar una clave con el proveedor',
       authorNameLabel: 'Tu nombre completo',
       authorNamePlaceholder: 'Como quieres aparecer en el libro',
@@ -849,8 +932,26 @@ const LANGS = {
       aiAsksLabel: 'LA IA PREGUNTA',
       yourAnswerLabel: 'TU RESPUESTA',
       chaptersProgress: 'Capítulos completados',
+      reviewTitle: 'Revisa el texto de tu libro',
+      chapterTextLabel: 'Texto del capítulo',
+      contentsTitle: 'Contenido',
+      contentsUpdateHint: 'Si el índice aparece vacío, actualiza los campos al abrir el documento en Word.',
+      reviewIntro: 'Lee cada capítulo con calma. Corrige hechos, nombres y fragmentos que no suenen como tú antes de montar el documento.',
+      draftSavedLabel: 'Borrador guardado en este navegador.',
+      draftSaveError: 'No se pudo guardar el borrador local. Descarga una copia JSON para proteger tus cambios.',
+      bookTitleLabel: 'Título del libro',
+      bookSubtitleLabel: 'Subtítulo (opcional)',
+      dedicationLabel: 'Dedicatoria (opcional)',
+      dedicationPlaceholder: 'Escribe a quién o a qué dedicas este libro',
+      sourcesLabel: 'Respuestas usadas en este capítulo',
+      regenerateChapter: 'Reescribir capítulo',
+      regenerateWorking: 'Reescribiendo…',
+      regenerateError: 'No se pudo reescribir este capítulo. Se conservó el texto editado.',
+      createBook: 'Montar el libro',
+      assemblyError: 'No se pudo montar el documento. Tus textos siguen disponibles en esta página.',
+      reviewChapterHint: 'El texto seguirá editable después de descargar el DOCX.',
       finalTitle: 'Tu libro está listo.',
-      finalMessage: 'Cada palabra aquí es parte de quien eres. El archivo DOCX está listo — edítalo, imprímelo y entrégalo a las personas que amas.',
+      finalMessage: 'El DOCX se montó con los capítulos que revisaste. Aún puedes editar, imprimir y compartir el archivo.',
       errorApiKey: 'Por favor ingresa tu clave de API.',
       errorName: 'Por favor ingresa tu nombre.',
       errorApi: 'Error de API: ',
@@ -859,6 +960,8 @@ const LANGS = {
       of: 'de',
       backupFound: 'Sesión guardada encontrada',
       backupRestore: 'Restaurar',
+      backupDelete: 'Borrar sesión guardada',
+      backupDeleteConfirm: '¿Borrar las respuestas y los borradores guardados en este navegador? No se puede deshacer.',
       coverTitle: 'Portada del libro',
       coverNone: 'Sin portada',
       coverGenerate: '🎨 Generar portada con IA',
@@ -875,43 +978,43 @@ const LANGS = {
     chapters: [
       { title: 'De dónde vengo',
         questions: [
-          'Cierra los ojos y piensa en la casa donde creciste. ¿Qué ves, escuchas o sientes cuando estás allí?',
-          '¿Quién fue la persona que más te definió en esa etapa — y qué te transmitió sin necesitar palabras?'
+          '¿Qué lugar, persona o rutina representa mejor el comienzo de tu historia? Cuenta una escena concreta que recuerdes.',
+          '¿Qué persona o experiencia influyó en tu manera de ver el mundo en esa época? ¿Qué recuerdas de ella?'
         ]},
       { title: 'Infancia: lo que quedó',
         questions: [
           '¿Cuál es el recuerdo de la infancia que nunca has olvidado — ese que regresa sin avisar?',
-          '¿Qué tenías en la infancia que los niños de hoy difícilmente tendrán?'
+          '¿Cómo era un día común para ti? ¿Qué pequeños detalles ayudan a imaginar aquella época?'
         ]},
       { title: 'Quién era yo a los 20',
         questions: [
-          '¿Cómo eras a los 18, 20 años — qué querías, qué temías, quién creías que ibas a ser?',
-          '¿Cuál fue la primera gran decisión que tomaste por tu cuenta — y qué sacrificaste por ella?'
+          '¿Cómo era tu vida al comienzo de la adultez? ¿Qué querías entonces y qué terminó pasando?',
+          '¿Qué decisión o cambio de esa etapa todavía significa algo para ti? ¿Qué recuerdas de ese momento?'
         ]},
       { title: 'Lo que construí',
         questions: [
-          'Cuando miras todo lo que has trabajado en la vida, ¿qué ves que va más allá del salario o del cargo?',
-          '¿Hubo un día, un proyecto, un momento — en que pensaste "para esto vine". ¿Qué fue?'
+          '¿Qué trabajo, cuidado, proyecto o responsabilidad ocupó una parte importante de tu vida? Cuenta una situación concreta que muestre cómo era.',
+          '¿Qué construiste o ayudaste a construir y te gustaría dejar registrado? ¿Qué recuerdo concreto lo representa?'
         ]},
-      { title: 'A quién amé',
+      { title: 'Vínculos que me acompañaron',
         questions: [
-          'Hay una persona — más allá de tus padres — que cambió permanentemente quién eres. ¿Quién es y qué hizo?',
-          'El amor te enseñó algo que no esperabas aprender. ¿Qué fue?'
+          '¿Qué relación tuvo un lugar importante en tu vida? Cuenta un recuerdo que muestre lo que significaba para ti.',
+          '¿Qué aprendiste sobre el afecto, la amistad o el cuidado a lo largo de los años? ¿Alguna experiencia cambió tu manera de entenderlo?'
         ]},
-      { title: 'Lo que me rompió y me hizo',
+      { title: 'Cambios y desafíos',
         questions: [
-          'Hubo un momento en que todo parecía derrumbarse — una pérdida, una traición, un fracaso. ¿Qué fue y cómo lo atravesaste?',
-          'Mirando atrás, ¿de qué error o fracaso estás secretamente agradecido de haber vivido?'
+          'Si quieres, cuenta una etapa difícil, cambio o desafío que haya marcado tu vida. ¿Qué pasó y qué te ayudó en ese período?',
+          '¿Hay algo que hoy entiendes de otra manera? ¿Qué cambió en tu perspectiva con el tiempo?'
         ]},
       { title: 'Lo que creo',
         questions: [
-          '¿Cuál es la cosa más importante que has aprendido sobre cómo tratar a las personas?',
-          'Si pudieras poner en una frase lo que guió tu vida — no lo que predicaste, sino lo que realmente viviste — ¿cuál sería?'
+          '¿Qué valor o idea orientó tus decisiones? Cuenta una situación en que se manifestó en la práctica.',
+          '¿Hay una convicción que haya cambiado con el tiempo? ¿Qué te llevó a revisarla o confirmarla?'
         ]},
       { title: 'Lo que dejo',
         questions: [
           '¿Qué quieres que las personas que te aman recuerden de ti — no por lo que hiciste, sino por quién fuiste?',
-          '¿Hay algo que nunca dijiste — a alguien, o a ti mismo — que quieres dejar escrito aquí?'
+          '¿Hay alguna historia, detalle o corrección que todavía no apareció y que te gustaría dejar registrado?'
         ]},
     ],
   },
@@ -924,12 +1027,18 @@ const state = {
   lang: null,
   provider: 'groq',
   apiKey: '',
+  apiConsent: false,
   authorName: '',
   chapterIdx: 0,
   questionIdx: 0,
   answers: [],
   photos: {},
   coverImageB64: null,
+  narratives: [],
+  narrativeErrors: {},
+  bookTitle: '',
+  bookSubtitle: '',
+  dedication: '',
   pendingAnswer: '',
   followupQuestion: null,
   awaitingFollowup: false,
@@ -997,6 +1106,52 @@ const chapters = () => LANGS[state.lang].chapters;
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[char]));
+
+function getBackupSnapshot() {
+  return {
+    schemaVersion: 2,
+    lang: state.lang,
+    authorName: state.authorName,
+    answers: state.answers,
+    narratives: state.narratives,
+    bookTitle: state.bookTitle,
+    bookSubtitle: state.bookSubtitle,
+    dedication: state.dedication,
+    savedAt: new Date().toISOString(),
+  };
+}
+
+function saveLocalBackup() {
+  try {
+    localStorage.setItem('bio_backup', JSON.stringify(getBackupSnapshot()));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+let backupSaveTimer;
+function scheduleLocalBackup() {
+  clearTimeout(backupSaveTimer);
+  backupSaveTimer = setTimeout(() => updateDraftStatus(saveLocalBackup()), 500);
+}
+
+function updateDraftStatus(saved) {
+  const status = document.getElementById('draft-save-status');
+  if (!status) return;
+  status.textContent = saved ? t().draftSavedLabel : t().draftSaveError;
+  status.classList.toggle('review-error', !saved);
+}
+
+function safeFileName(value) {
+  const normalized = String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 80);
+  return normalized || 'memorias';
+}
 
 function setProgress(current, total, chapterName) {
   const pct = total ? Math.round((current / total) * 100) : 0;
@@ -1089,18 +1244,10 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
 async function getFollowupQuestion(chapterTitle, originalQuestion, answer) {
   const lang = state.lang;
   const systemMap = {
-    pt: `Você é um entrevistador empático conduzindo uma entrevista biográfica em português.
-Com base na resposta, faça UMA pergunta de aprofundamento calorosa e específica que explore um detalhe concreto ou emoção que a pessoa mencionou.
-Máximo 2 frases. Sem introduções. Responda APENAS com a pergunta.`,
-    en: `You are an empathetic interviewer conducting a biographical interview in English.
-Based on the answer, ask ONE warm, specific follow-up question that explores a concrete detail or emotion the person mentioned.
-Max 2 sentences. No introductions. Respond ONLY with the question.`,
-    de: `Sie sind ein einfühlsamer Interviewer für ein biografisches Interview auf Deutsch.
-Stellen Sie EINE spezifische Folgefrage zu einem konkreten Detail oder einer Emotion aus der Antwort.
-Maximal 2 Sätze. Keine Einleitung. Antworten Sie NUR mit der Frage.`,
-    es: `Eres un entrevistador empático en una entrevista biográfica en español.
-Haz UNA pregunta de seguimiento específica sobre un detalle concreto o emoción que mencionó la persona.
-Máximo 2 oraciones. Sin introducciones. Responde SOLO con la pregunta.`,
+    pt: `Você é um entrevistador biográfico cuidadoso. Faça uma única pergunta breve que ajude a registrar uma cena, contexto ou detalhe que a pessoa já mencionou. Pergunte sobre lugar, época, pessoas presentes, ações, palavras lembradas ou o que a pessoa deseja que fique registrado. Não presuma sentimentos, relações, causas ou consequências. Não pressione por detalhes íntimos ou dolorosos; se a resposta indicar desconforto, ofereça uma saída respeitosa. Não sugira uma resposta. Responda apenas com a pergunta, em até duas frases.`,
+    en: `You are a careful biographical interviewer. Ask one brief question that helps record a scene, context, or detail the person has already mentioned. Ask about place, time, people present, actions, remembered words, or what they want preserved. Do not assume feelings, relationships, causes, or consequences. Do not press for intimate or painful details; if the answer suggests discomfort, offer a respectful way to move on. Do not suggest an answer. Respond only with the question, in no more than two sentences.`,
+    de: `Sie sind ein sorgfältiger biografischer Interviewer. Stellen Sie eine kurze Frage, die hilft, eine bereits erwähnte Szene, einen Kontext oder ein Detail festzuhalten. Fragen Sie nach Ort, Zeit, anwesenden Personen, Handlungen, erinnerten Worten oder danach, was festgehalten werden soll. Unterstellen Sie keine Gefühle, Beziehungen, Ursachen oder Folgen. Drängen Sie nicht auf intime oder schmerzhafte Einzelheiten; bei erkennbarem Unbehagen bieten Sie einen respektvollen Ausweg an. Schlagen Sie keine Antwort vor. Antworten Sie nur mit der Frage, höchstens in zwei Sätzen.`,
+    es: `Eres un entrevistador biográfico cuidadoso. Haz una sola pregunta breve que ayude a registrar una escena, contexto o detalle que la persona ya mencionó. Pregunta por el lugar, la época, las personas presentes, las acciones, las palabras recordadas o lo que quiere dejar registrado. No presupongas sentimientos, relaciones, causas ni consecuencias. No insistas en detalles íntimos o dolorosos; si la respuesta muestra incomodidad, ofrece una salida respetuosa. No sugieras una respuesta. Responde solo con la pregunta, en un máximo de dos frases.`,
   };
   const sys = systemMap[lang] || systemMap.en;
   const user = `Capítulo: ${chapterTitle}\nPergunta: ${originalQuestion}\nResposta: ${answer}`;
@@ -1110,61 +1257,69 @@ Máximo 2 oraciones. Sin introducciones. Responde SOLO con la pregunta.`,
 async function generateNarrative(chapterTitle, qas) {
   const lang = state.lang;
   const systemMap = {
-    pt: `Você é um escritor de memórias — sensível, literário, sem exagero sentimental. Escreva exatamente 4 parágrafos para este capítulo de um livro de memórias de bolso.
+    pt: `Você é editor e escritor de memórias. Transforme as respostas deste capítulo em prosa autobiográfica em primeira pessoa, clara, específica e natural, preservando o modo de falar e a perspectiva da pessoa.
 
-Regras obrigatórias:
-- Escreva na primeira pessoa, como a voz da própria pessoa
-- O primeiro parágrafo deve abrir com uma imagem concreta ou momento específico — nunca com uma generalização
-- Use nomes próprios, lugares e detalhes exatos que aparecem nas respostas
-- Tom: cálido, honesto, sem melodrama — como uma conversa íntima que virou prosa
-- Cada parágrafo deve ter 4 a 6 frases. Cerca de 500 palavras no total.
-- NÃO inclua o título do capítulo
-- NÃO use frases prontas ("a vida é uma jornada", "no fim das contas", "aprendi que")
-- Cada parágrafo deve trazer algo NOVO — não repita o mesmo fato, objeto ou ideia em parágrafos diferentes
-- Se a resposta for curta, aprofunde o sentimento implícito — não invente fatos
-- Antes de entregar, releia e remova repetições e clichês, e garanta o limite de 4 a 6 frases por parágrafo`,
+Precisão e respeito:
+- Use somente fatos, nomes, lugares, datas, relações, ações e sentimentos que a pessoa declarou. Não complete lacunas com suposições nem invente diálogo, pensamentos, cenas, motivos, reações ou consequências.
+- Não trate uma interpretação como fato. Preserve dúvidas, versões aproximadas e contradições; se algo estiver incerto, mantenha a incerteza ou omita a afirmação.
+- Não atribua uma emoção porque ela parece provável. Não transforme sofrimento em lição, superação ou final edificante. Preserve limites e ambivalência.
+- Não fabrique citações. Só use aspas para palavras que a pessoa informou como fala lembrada.
+- Não acrescente contexto histórico ou biográfico que não esteja nas respostas.
 
-    en: `You are a memoir writer — sensitive, literary, without sentimental excess. Write exactly 4 paragraphs for this chapter of a pocket memoir.
+Qualidade narrativa:
+- Abra com uma cena ou detalhe concreto fornecido. Se não houver material para isso, comece de forma direta, sem inventar uma cena.
+- Organize os fatos numa sequência que faça sentido. Não invente ordem cronológica; quando ela não estiver clara, use transições neutras.
+- Preserve expressões marcantes da pessoa quando contribuírem para sua voz. Evite embelezamento genérico, clichês, repetição e tom de homenagem promocional.
+- Escreva de dois a cinco parágrafos, usando apenas a extensão que o material sustentar. Seja conciso diante de respostas curtas; nunca preencha espaço com sentimento implícito ou reflexão genérica.
+- Não inclua o título do capítulo, instruções, comentários editoriais ou uma conclusão moral. Responda apenas com o texto do capítulo.`,
 
-Mandatory rules:
-- Write in first person, as the person's own voice
-- The first paragraph must open with a concrete image or specific moment — never a generalization
-- Use proper names, places and exact details from the answers
-- Tone: warm, honest, without melodrama — like an intimate conversation turned into prose
-- Each paragraph should have 4 to 6 sentences. About 500 words total.
-- Do NOT include the chapter title
-- Do NOT use clichés ("life is a journey", "in the end", "I learned that")
-- Each paragraph must add something NEW — do not repeat the same fact, object or idea across paragraphs
-- If an answer is short, deepen the implicit feeling — do not invent facts
-- Before delivering, reread and remove repetition and clichés, and ensure the 4–6 sentences per paragraph limit`,
+    en: `You are an editor and memoir writer. Shape this chapter's answers into clear, specific, natural first-person autobiographical prose, preserving the person's perspective and way of speaking.
 
-    de: `Sie sind ein Memoirenschreiber — einfühlsam, literarisch, ohne sentimentale Übertreibung. Schreiben Sie genau 4 Absätze für dieses Kapitel eines Taschenbuchs der Erinnerungen.
+Accuracy and respect:
+- Use only facts, names, places, dates, relationships, actions, and feelings the person stated. Do not fill gaps with assumptions or invent dialogue, thoughts, scenes, motives, reactions, or consequences.
+- Do not present an interpretation as fact. Preserve uncertainty, approximations, and contradictions; keep uncertainty or omit a claim when something is unclear.
+- Do not assign a likely emotion. Do not turn hardship into a lesson, triumph, or uplifting ending. Keep boundaries and ambivalence intact.
+- Do not fabricate quotations. Use quotation marks only for words the person identified as remembered speech.
+- Add no historical or biographical context absent from the answers.
 
-Pflichtregeln:
-- Schreiben Sie in der ersten Person, als die Stimme der Person selbst
-- Der erste Absatz muss mit einem konkreten Bild oder spezifischen Moment beginnen — niemals mit einer Verallgemeinerung
-- Verwenden Sie Eigennamen, Orte und genaue Details aus den Antworten
-- Ton: warm, ehrlich, ohne Melodrama — wie ein intimes Gespräch, das zu Prosa wurde
-- Jeder Absatz sollte 4 bis 6 Sätze haben. Insgesamt ca. 500 Wörter.
-- Fügen Sie KEINEN Kapiteltitel ein
-- Verwenden Sie KEINE Klischees
-- Jeder Absatz muss etwas NEUES bringen — wiederholen Sie nicht dieselbe Tatsache, dasselbe Objekt oder dieselbe Idee in verschiedenen Absätzen
-- Bei kurzen Antworten vertiefen Sie das implizite Gefühl — erfinden Sie keine Fakten
-- Überprüfen Sie den Text vor der Ausgabe, entfernen Sie Wiederholungen und Klischees und halten Sie das Limit von 4 bis 6 Sätzen pro Absatz ein`,
+Narrative quality:
+- Open with a supplied scene or concrete detail. If there is not enough material, begin plainly instead of inventing a scene.
+- Arrange the facts coherently. Do not invent chronology; use neutral transitions when sequence is unclear.
+- Keep distinctive expressions that contribute to the person's voice. Avoid generic embellishment, clichés, repetition, and promotional tribute language.
+- Write two to five paragraphs, using only as much length as the source material supports. Be concise when answers are brief; never pad with implied feelings or generic reflection.
+- Do not include the chapter title, instructions, editorial notes, or a moral conclusion. Respond only with the chapter text.`,
 
-    es: `Eres un escritor de memorias — sensible, literario, sin exceso sentimental. Escribe exactamente 4 párrafos para este capítulo de un libro de memorias de bolsillo.
+    de: `Sie sind Lektor und Memoirenschreiber. Formen Sie die Antworten dieses Kapitels zu klarer, konkreter und natürlicher autobiografischer Prosa in der ersten Person. Bewahren Sie Perspektive und Ausdrucksweise der Person.
 
-Reglas obligatorias:
-- Escribe en primera persona, como la voz de la propia persona
-- El primer párrafo debe abrir con una imagen concreta o momento específico — nunca con una generalización
-- Usa nombres propios, lugares y detalles exactos de las respuestas
-- Tono: cálido, honesto, sin melodrama — como una conversación íntima que se convirtió en prosa
-- Cada párrafo debe tener 4 a 6 oraciones. Unas 500 palabras en total.
-- NO incluyas el título del capítulo
-- NO uses frases hechas
-- Cada párrafo debe aportar algo NUEVO — no repitas el mismo hecho, objeto o idea en distintos párrafos
-- Si una respuesta es corta, profundiza el sentimiento implícito — no inventes hechos
-- Antes de entregar, relee y elimina repeticiones y frases hechas, y respeta el límite de 4 a 6 oraciones por párrafo`,
+Genauigkeit und Respekt:
+- Verwenden Sie nur Fakten, Namen, Orte, Daten, Beziehungen, Handlungen und Gefühle, die die Person genannt hat. Ergänzen Sie keine Lücken durch Annahmen und erfinden Sie keine Dialoge, Gedanken, Szenen, Motive, Reaktionen oder Folgen.
+- Stellen Sie eine Deutung nicht als Tatsache dar. Bewahren Sie Unsicherheit, ungefähre Angaben und Widersprüche. Lassen Sie Ungewisses unklar oder weg.
+- Unterstellen Sie keine wahrscheinlichen Gefühle. Machen Sie aus Schwierigkeiten keine Lehre, keinen Triumph und keinen aufmunternden Schluss. Bewahren Sie Grenzen und Zwiespältigkeit.
+- Erfinden Sie keine Zitate. Anführungszeichen nur für Worte verwenden, die als erinnerte Äußerung genannt wurden.
+- Fügen Sie keinen historischen oder biografischen Kontext hinzu, der in den Antworten fehlt.
+
+Erzählqualität:
+- Beginnen Sie mit einer genannten Szene oder einem konkreten Detail. Wenn das Material dafür nicht reicht, beginnen Sie direkt, statt eine Szene zu erfinden.
+- Ordnen Sie die Fakten sinnvoll. Erfinden Sie keine Chronologie; verwenden Sie neutrale Übergänge, wenn die Reihenfolge unklar ist.
+- Bewahren Sie prägnante Formulierungen, die zur Stimme der Person gehören. Vermeiden Sie allgemeine Ausschmückungen, Klischees, Wiederholungen und werbliche Würdigung.
+- Schreiben Sie zwei bis fünf Absätze und verwenden Sie nur so viel Umfang, wie das Material trägt. Bei kurzen Antworten bleiben Sie knapp; füllen Sie den Text nie mit unterstellten Gefühlen oder allgemeinen Gedanken.
+- Fügen Sie weder Kapiteltitel noch Anweisungen, redaktionelle Hinweise oder eine moralische Schlussfolgerung hinzu. Antworten Sie nur mit dem Kapiteltext.`,
+
+    es: `Eres editor y escritor de memorias. Convierte las respuestas de este capítulo en prosa autobiográfica clara, concreta y natural, en primera persona, preservando la perspectiva y la forma de hablar de la persona.
+
+Precisión y respeto:
+- Usa solo hechos, nombres, lugares, fechas, relaciones, acciones y sentimientos que la persona haya indicado. No completes vacíos con suposiciones ni inventes diálogos, pensamientos, escenas, motivos, reacciones o consecuencias.
+- No presentes una interpretación como un hecho. Conserva dudas, aproximaciones y contradicciones; mantén la incertidumbre o elimina una afirmación si no está clara.
+- No atribuyas una emoción porque parezca probable. No conviertas las dificultades en una lección, triunfo o final inspirador. Respeta los límites y la ambivalencia.
+- No inventes citas. Usa comillas solo para palabras que la persona haya identificado como algo que recuerda haber dicho.
+- No agregues contexto histórico o biográfico que no aparezca en las respuestas.
+
+Calidad narrativa:
+- Empieza con una escena o detalle concreto proporcionado. Si no hay material suficiente, comienza directamente en lugar de inventar una escena.
+- Ordena los hechos de forma coherente. No inventes una cronología; usa transiciones neutras si el orden no está claro.
+- Conserva expresiones distintivas que reflejen la voz de la persona. Evita adornos genéricos, clichés, repeticiones y tono de homenaje promocional.
+- Escribe de dos a cinco párrafos, con la extensión que el material permita. Sé conciso si las respuestas son breves; no rellenes con sentimientos implícitos ni reflexiones genéricas.
+- No incluyas el título del capítulo, instrucciones, notas editoriales ni una moraleja. Responde solo con el texto del capítulo.`,
 
   };
 
@@ -1177,7 +1332,7 @@ Reglas obligatorias:
     }
     user += '\n';
   }
-  return callAI(sys, user, 1500);
+  return callAI(sys, user, 2200);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1341,7 +1496,11 @@ async function buildZip(files) {
       0x00,0x00,0x00,0x00,
       ...u32le(e.crc), ...u32le(e.compSize), ...u32le(e.uncompSize),
       ...u16le(e.nameBytes.length),
-      0x00,0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+      0x00,0x00, // extra field length
+      0x00,0x00, // file comment length
+      0x00,0x00, // disk number start
+      0x00,0x00, // internal file attributes
+      0x00,0x00,0x00,0x00, // external file attributes
       ...u32le(e.offset), ...e.nameBytes,
     ]));
   }
@@ -1374,7 +1533,9 @@ function makeParaXml(text, opts = {}) {
     ${heading ? `<w:pStyle w:val="Heading1"/>` : ''}
     ${center ? `<w:jc w:val="center"/>` : ''}
     ${pageBreak ? `<w:pageBreakBefore/>` : ''}
-    <w:spacing w:before="${spaceBefore}" w:after="${spaceAfter}" w:line="380" w:lineRule="auto"/>
+    <w:spacing w:before="${spaceBefore}" w:after="${spaceAfter}" w:line="340" w:lineRule="auto"/>
+    <w:widowControl/>
+    ${heading ? '<w:keepNext/>' : ''}
     ${firstIndent ? `<w:ind w:firstLine="${firstIndent}"/>` : ''}
   </w:pPr>`;
   const rPr = `<w:rPr>
@@ -1396,7 +1557,7 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
     state.lang==='pt'?'pt-BR':state.lang==='de'?'de-DE':state.lang==='es'?'es-ES':'en-US',
     { year:'numeric', month:'long' }
   );
-  const bookTitle = titleMap[state.lang] || titleMap.en;
+  const bookTitle = state.bookTitle.trim() || titleMap[state.lang] || titleMap.en;
   const byWord    = byMap[state.lang] || byMap.en;
 
   let body = '';
@@ -1438,9 +1599,33 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
     body += makeParaXml('', { spaceAfter: 240, spaceBefore: 0 });
   }
   body += makeParaXml(bookTitle,                       { bold:true, size:52, center:true, spaceAfter:360, spaceBefore:0 });
+  if (state.bookSubtitle.trim()) {
+    body += makeParaXml(state.bookSubtitle.trim(), { italic:true, size:28, color:'5C4F3A', center:true, spaceAfter:260, spaceBefore:0 });
+  }
   body += makeParaXml(`${byWord} ${state.authorName}`, { italic:true, size:28, color:'5C4F3A', center:true, spaceAfter:200, spaceBefore:0 });
   body += makeParaXml(dateStr,                         { size:22, color:'9A8B73', center:true, spaceAfter:0, spaceBefore:0 });
   body += `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+
+  if (state.dedication.trim()) {
+    body += makeParaXml(state.dedication.trim(), { italic:true, size:28, color:'5C4F3A', center:true, spaceBefore:4320, spaceAfter:0 });
+    body += `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+  }
+
+  const contentsTitleMap = { pt:'Sumário', en:'Contents', de:'Inhalt', es:'Contenido' };
+  const contentsHintMap = {
+    pt:'Se o sumário não aparecer, atualize os campos ao abrir no Word.',
+    en:'If the table is blank, update fields after opening the document in Word.',
+    de:'Falls das Verzeichnis leer ist, aktualisieren Sie die Felder nach dem Öffnen in Word.',
+    es:'Si el índice aparece vacío, actualiza los campos al abrir el documento en Word.',
+  };
+  body += makeParaXml(contentsTitleMap[state.lang] || contentsTitleMap.en, { bold:true, size:34, spaceBefore:0, spaceAfter:360 });
+  body += `<w:p><w:pPr><w:spacing w:before="0" w:after="160"/></w:pPr>
+    <w:r><w:fldChar w:fldCharType="begin" w:dirty="true"/></w:r>
+    <w:r><w:instrText xml:space="preserve"> TOC \\o "1-1" \\h \\z \\u </w:instrText></w:r>
+    <w:r><w:fldChar w:fldCharType="separate"/></w:r>
+    <w:r><w:t>${xmlEsc(contentsHintMap[state.lang] || contentsHintMap.en)}</w:t></w:r>
+    <w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>
+  <w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
 
   for (let i = 0; i < narratives.length; i++) {
     const narrative = narratives[i];
@@ -1449,7 +1634,7 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
     body += makeParaXml(`${i+1}. ${chap.title}`, { heading:true, bold:true, size:36, spaceBefore:0, spaceAfter:280 });
     const paras = narrative.split(/\n+/).filter(p => p.trim());
     for (const para of paras) {
-      body += makeParaXml(para, { firstIndent: 720, spaceAfter: 220, size: 24 });
+      body += makeParaXml(para, { firstIndent: 360, spaceAfter: 150, size: 22 });
     }
     if (chapterImages[i] && chapterImages[i].length > 0) {
       const mosaicB64 = await composeMosaic(chapterImages[i]);
@@ -1461,7 +1646,7 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
       body += makeParaXml('', { spaceAfter: 120, spaceBefore: 240 });
       body += makeImageXml(rId, 5760000, 5760000);
     }
-    if (i < narratives.length - 1) {
+    if (narratives.slice(i + 1).some(Boolean)) {
       body += `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
     }
   }
@@ -1472,7 +1657,9 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
   xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <w:body>${body}
     <w:sectPr>
+      <w:footerReference w:type="first" r:id="rId4"/>
       <w:footerReference w:type="default" r:id="rId1"/>
+      <w:titlePg/>
       <w:pgSz w:w="11906" w:h="16838"/>
       <w:pgMar w:top="1440" w:right="1440" w:bottom="1800" w:left="1800"/>
     </w:sectPr>
@@ -1494,20 +1681,23 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
   </w:p>
 </w:ftr>`;
 
+  const firstPageFooterXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p/></w:ftr>`;
+
   const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:docDefaults><w:rPrDefault><w:rPr>
     <w:rFonts w:ascii="Georgia" w:hAnsi="Georgia"/>
     <w:sz w:val="24"/><w:szCs w:val="24"/>
   </w:rPr></w:rPrDefault></w:docDefaults>
-  <w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal"/></w:style>
+  <w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal"/><w:pPr><w:widowControl/></w:pPr></w:style>
   <w:style w:type="paragraph" w:styleId="Heading1">
     <w:name w:val="heading 1"/>
     <w:basedOn w:val="Normal"/>
     <w:pPr>
       <w:spacing w:before="560" w:after="280"/>
+      <w:keepNext/>
       <w:outlineLvl w:val="0"/>
-      <w:pBdr><w:bottom w:val="single" w:sz="4" w:space="10" w:color="C97B2A"/></w:pBdr>
     </w:pPr>
     <w:rPr>
       <w:b/><w:bCs/>
@@ -1518,9 +1708,27 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
   </w:style>
 </w:styles>`;
 
+  const settingsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:updateFields w:val="true"/>
+</w:settings>`;
+
+  const corePropertiesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+  xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dc:title>${xmlEsc(bookTitle)}</dc:title>
+  <dc:creator>${xmlEsc(state.authorName)}</dc:creator>
+  <dc:subject>${xmlEsc(contentsTitleMap[state.lang] || contentsTitleMap.en)}</dc:subject>
+  <cp:lastModifiedBy>${xmlEsc(state.authorName)}</cp:lastModifiedBy>
+  <dcterms:created xsi:type="dcterms:W3CDTF">${new Date().toISOString()}</dcterms:created>
+  <dcterms:modified xsi:type="dcterms:W3CDTF">${new Date().toISOString()}</dcterms:modified>
+</cp:coreProperties>`;
+
   const rootRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
 </Relationships>`;
 
   const imgRelEntries = imgRels.map(r =>
@@ -1538,7 +1746,10 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
   <Default Extension="jpeg" ContentType="image/jpeg"/>
   <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
   <Override PartName="/word/styles.xml"   ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+  <Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"/>
   <Override PartName="/word/footer1.xml"  ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>
+  <Override PartName="/word/footer2.xml"  ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>
+  <Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
   ${imgContentTypes}
 </Types>`;
 
@@ -1546,6 +1757,8 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>
   <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+  <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/>
+  <Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer2.xml"/>
   ${imgRelEntries}
 </Relationships>`;
 
@@ -1554,7 +1767,10 @@ async function generateDocx(narratives, chapterImages = {}, coverB64 = null) {
     { name: '_rels/.rels',                  data: enc.encode(rootRelsXml) },
     { name: 'word/document.xml',            data: enc.encode(documentXml) },
     { name: 'word/styles.xml',              data: enc.encode(stylesXml) },
+    { name: 'word/settings.xml',            data: enc.encode(settingsXml) },
     { name: 'word/footer1.xml',             data: enc.encode(footerXml) },
+    { name: 'word/footer2.xml',             data: enc.encode(firstPageFooterXml) },
+    { name: 'docProps/core.xml',            data: enc.encode(corePropertiesXml) },
     { name: 'word/_rels/document.xml.rels', data: enc.encode(relsXml) },
     ...imageFiles,
   ];
@@ -1595,13 +1811,33 @@ function renderLangScreen() {
       banner.style.cssText = 'margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;';
       banner.innerHTML = `
         <span>💾 ${ui ? ui.backupFound : 'Session found'}: <strong>${escapeHtml(b.authorName)}</strong> — ${b.answers.length} respostas (${saved})</span>
-        <button id="restore-btn" class="btn btn-secondary" style="font-size:.82rem; padding:.4rem .9rem;">${ui ? ui.backupRestore : 'Restore'}</button>
+        <div class="btn-row" style="margin:0; gap:.5rem;">
+          <button id="restore-btn" class="btn btn-secondary" style="font-size:.82rem; padding:.4rem .9rem;">${ui ? ui.backupRestore : 'Restore'}</button>
+          <button id="delete-backup-btn" class="btn btn-secondary" style="font-size:.82rem; padding:.4rem .9rem;">${ui ? ui.backupDelete : 'Delete saved session'}</button>
+        </div>
       `;
       screen().prepend(banner);
+      document.getElementById('delete-backup-btn').addEventListener('click', () => {
+        if (!window.confirm(ui?.backupDeleteConfirm || 'Delete the saved session from this browser?')) return;
+        try {
+          localStorage.removeItem('bio_backup');
+          banner.remove();
+        } catch (error) {
+          const message = document.createElement('p');
+          message.className = 'review-error';
+          message.textContent = ui?.draftSaveError || 'Could not delete the saved session.';
+          banner.appendChild(message);
+        }
+      });
       document.getElementById('restore-btn').addEventListener('click', () => {
         state.lang       = b.lang;
         state.authorName = b.authorName;
         state.answers    = b.answers;
+        state.narratives = Array.isArray(b.narratives) ? b.narratives : [];
+        state.narrativeErrors = {};
+        state.bookTitle = typeof b.bookTitle === 'string' ? b.bookTitle : '';
+        state.bookSubtitle = typeof b.bookSubtitle === 'string' ? b.bookSubtitle : '';
+        state.dedication = typeof b.dedication === 'string' ? b.dedication : '';
         // Calculate real position from saved answers
         const chaps = LANGS[b.lang].chapters;
         let totalQ = 0;
@@ -1616,6 +1852,19 @@ function renderLangScreen() {
           if (totalQ >= b.answers.length) break;
         }
         if (b.answers.length >= chaps.reduce((s,c)=>s+c.questions.length,0)) {
+          const completedNarratives = chaps.every((chapter, index) => {
+            const hasAnswers = b.answers.some(answer => answer.chapterIdx === index && answer.answer);
+            return !hasAnswers || Boolean(state.narratives[index]?.trim());
+          });
+          if (completedNarratives) {
+            const byChapter = {};
+            for (const answer of state.answers) {
+              if (!byChapter[answer.chapterIdx]) byChapter[answer.chapterIdx] = [];
+              byChapter[answer.chapterIdx].push(answer);
+            }
+            renderReviewScreen(byChapter, chaps);
+            return;
+          }
           renderGenerateScreen(); return;
         }
         document.getElementById('main-title').textContent    = LANGS[b.lang].ui.appTitle;
@@ -1707,6 +1956,10 @@ function renderSetupScreen() {
         <label>${ui.authorNameLabel}</label>
         <input type="text" id="author-name" placeholder="${ui.authorNamePlaceholder}" />
       </div>
+      <div class="field" style="display:flex; align-items:flex-start; gap:.65rem; color:var(--ink-mid); font-size:.86rem;">
+        <input type="checkbox" id="api-consent" style="margin-top:.35rem; flex:0 0 auto;" />
+        <label for="api-consent" style="font-weight:400; text-transform:none; letter-spacing:0;">${escapeHtml(ui.apiConsentLabel)}</label>
+      </div>
       <div class="btn-row">
         <button class="btn btn-primary" id="start-btn">${ui.startBtn}</button>
       </div>
@@ -1721,16 +1974,23 @@ function renderSetupScreen() {
   });
 
   $('start-btn').addEventListener('click', () => {
+    if (!$('api-consent').checked) { showError(ui.apiConsentLabel); return; }
     const name = $('author-name').value.trim();
     if (!name) { showError(ui.errorName); return; }
     state.provider = $('provider-select').value;
     const key = $('api-key')?.value.trim();
     if (!key) { showError(ui.errorApiKey); return; }
     state.apiKey = key;
+    state.apiConsent = true;
     state.authorName  = name;
     state.chapterIdx  = 0;
     state.questionIdx = 0;
     state.answers     = [];
+    state.narratives = [];
+    state.narrativeErrors = {};
+    state.bookTitle = '';
+    state.bookSubtitle = '';
+    state.dedication = '';
     renderQuestionScreen();
   });
 }
@@ -1743,10 +2003,10 @@ function renderQuestionScreen() {
 
   if (state.chapterIdx === 0 && state.questionIdx === 0 && state.authorName) {
     const greetMap = {
-      pt: `${escapeHtml(state.authorName)}, feche os olhos e pense na casa onde você cresceu. O que você vê, ouve ou sente quando está lá?`,
-      en: `${escapeHtml(state.authorName)}, close your eyes and think of the house where you grew up. What do you see, hear, or feel when you are there?`,
-      de: `${escapeHtml(state.authorName)}, schließen Sie die Augen und denken Sie an das Haus, in dem Sie aufgewachsen sind. Was sehen, hören oder fühlen Sie?`,
-      es: `${escapeHtml(state.authorName)}, cierra los ojos y piensa en la casa donde creciste. ¿Qué ves, escuchas o sientes cuando estás allí?`,
+      pt: `${escapeHtml(state.authorName)}, qual lugar, pessoa ou rotina representa melhor o começo da sua história? Conte uma cena concreta que você lembra.`,
+      en: `${escapeHtml(state.authorName)}, what place, person, or routine best represents the beginning of your story? Describe a concrete scene you remember.`,
+      de: `${escapeHtml(state.authorName)}, welcher Ort, Mensch oder Alltag steht für den Anfang Ihrer Geschichte? Beschreiben Sie eine konkrete Szene, an die Sie sich erinnern.`,
+      es: `${escapeHtml(state.authorName)}, ¿qué lugar, persona o rutina representa mejor el comienzo de tu historia? Cuenta una escena concreta que recuerdes.`,
     };
     question = greetMap[state.lang] || question;
   }
@@ -1803,7 +2063,13 @@ function renderQuestionScreen() {
   setProgress(chapNum, chaps.length, chap.title);
 
   $('next-btn').addEventListener('click', () => handleNextClick(question, chap.title));
-  $('skip-btn').addEventListener('click', () => advanceQuestion(question, chap.title, '', null, ''));
+  $('skip-btn').addEventListener('click', () => {
+    if (state.awaitingFollowup) {
+      advanceQuestion(question, chap.title, state.pendingAnswer, state.followupQuestion, '');
+    } else {
+      advanceQuestion(question, chap.title, '', null, '');
+    }
+  });
 
   if (canGoBack) {
     $('back-btn').addEventListener('click', () => {
@@ -1816,7 +2082,7 @@ function renderQuestionScreen() {
 
   $('save-now-btn').addEventListener('click', () => {
     if (!state.answers.length) { showError(ui.errorNoAnswers); return; }
-    const data = JSON.stringify({ lang: state.lang, authorName: state.authorName, answers: state.answers, savedAt: new Date().toISOString() }, null, 2);
+    const data = JSON.stringify(getBackupSnapshot(), null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -1894,12 +2160,7 @@ async function handleNextClick(question, chapterTitle) {
 function advanceQuestion(question, chapterTitle, answer, followup, followupAnswer) {
   const chaps = chapters();
   state.answers.push({ chapter: chapterTitle, chapterIdx: state.chapterIdx, question, answer, followup, followupAnswer });
-  try {
-    localStorage.setItem('bio_backup', JSON.stringify({
-      lang: state.lang, authorName: state.authorName,
-      answers: state.answers, savedAt: new Date().toISOString(),
-    }));
-  } catch(e) {}
+  saveLocalBackup();
 
   const chap = chaps[state.chapterIdx];
   if (state.questionIdx < chap.questions.length - 1) {
@@ -1969,7 +2230,7 @@ function renderGenerateScreen() {
   `;
 
   $('backup-btn').addEventListener('click', () => {
-    const data = JSON.stringify({ lang: state.lang, authorName: state.authorName, answers: state.answers, savedAt: new Date().toISOString() }, null, 2);
+    const data = JSON.stringify(getBackupSnapshot(), null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -2036,6 +2297,10 @@ async function runGeneration(byChapter, chaps) {
                style="color:var(--amber); text-decoration:none; font-weight:600;">🔑 ${ui.getKeyLabel} ↗</a>
           </p>
         </div>
+        <div class="field" style="display:flex; align-items:flex-start; gap:.65rem; color:var(--ink-mid); font-size:.86rem;">
+          <input type="checkbox" id="gen-api-consent" style="margin-top:.35rem; flex:0 0 auto;" />
+          <label for="gen-api-consent" style="font-weight:400; text-transform:none; letter-spacing:0;">${escapeHtml(ui.apiConsentLabel)}</label>
+        </div>
         <div class="btn-row">
           <button class="btn btn-primary" id="gen-key-confirm">${ui.finishBtn}</button>
         </div>
@@ -2046,10 +2311,12 @@ async function runGeneration(byChapter, chaps) {
       $('gen-get-key-link').href   = PROVIDERS[p].keyUrl;
     });
     $('gen-key-confirm').addEventListener('click', () => {
+      if (!$('gen-api-consent').checked) { showError(ui.apiConsentLabel); return; }
       const k = $('gen-api-key').value.trim();
       if (!k) { showError(ui.errorApiKey); return; }
       state.provider = $('gen-provider-select').value;
       state.apiKey   = k;
+      state.apiConsent = true;
       status.innerHTML = '';
       runGeneration(byChapter, chaps);
     });
@@ -2068,28 +2335,137 @@ async function runGeneration(byChapter, chaps) {
     </div>
   `;
 
-  const narratives = [];
+  state.narratives = [];
+  state.narrativeErrors = {};
   for (let i = 0; i < chaps.length; i++) {
     const qas = byChapter[i];
     const chapNameEl = document.getElementById('gen-chapter-name');
     if (chapNameEl) chapNameEl.textContent = `${chaps[i].title}…`;
-    if (!qas || !qas.some(a => a.answer)) { narratives.push(null); continue; }
+    if (!qas || !qas.some(a => a.answer)) { state.narratives.push(null); continue; }
     try {
-      narratives.push(await generateNarrative(chaps[i].title, qas));
+      state.narratives.push(await generateNarrative(chaps[i].title, qas));
     } catch (e) {
-      narratives.push(qas.map(a => a.answer).filter(Boolean).join('\n\n'));
+      state.narratives.push('');
+      state.narrativeErrors[i] = e.message || 'Generation failed';
     }
   }
 
-  try {
-    const blob = await generateDocx(narratives, state.photos, state.coverImageB64);
-    state.docxBlob = blob;
-    renderFinalScreen();
-  } catch (e) {
-    genBtn.disabled = false;
-    genBtn.innerHTML = ui.finishBtn;
-    showError(ui.errorApi + e.message);
+  saveLocalBackup();
+  renderReviewScreen(byChapter, chaps);
+}
+
+function renderReviewScreen(byChapter, chaps) {
+  const ui = t();
+  if (!state.bookTitle) {
+    const defaults = { pt: `Memórias de ${state.authorName}`, en: `Memoirs of ${state.authorName}`, de: `Erinnerungen von ${state.authorName}`, es: `Memorias de ${state.authorName}` };
+    state.bookTitle = defaults[state.lang] || defaults.en;
   }
+  const chapterCards = chaps.map((chapter, index) => {
+    const qas = byChapter[index] || [];
+    if (!qas.some(qa => qa.answer)) return '';
+    const sourceItems = qas.filter(qa => qa.answer).map(qa => `
+      <div class="review-source-item"><strong>${escapeHtml(qa.question)}</strong><br>${escapeHtml(qa.answer)}${qa.followupAnswer ? `<br><br><strong>${escapeHtml(qa.followup)}</strong><br>${escapeHtml(qa.followupAnswer)}` : ''}</div>
+    `).join('');
+    const error = state.narrativeErrors?.[index];
+    return `
+      <section class="review-chapter" data-chapter-index="${index}">
+        <h3>${escapeHtml(chapter.title)}</h3>
+        ${error ? `<p class="review-error" role="alert">${escapeHtml(ui.regenerateError)}</p>` : ''}
+        <label for="review-text-${index}">${escapeHtml(ui.chapterTextLabel)}</label>
+        <textarea id="review-text-${index}" data-narrative-index="${index}">${escapeHtml(state.narratives[index] || '')}</textarea>
+        <div class="review-chapter-actions">
+          <span class="review-hint">${escapeHtml(ui.reviewChapterHint)}</span>
+          <button class="btn btn-secondary" type="button" data-regenerate-index="${index}">${escapeHtml(ui.regenerateChapter)}</button>
+        </div>
+        <details class="review-sources"><summary>${escapeHtml(ui.sourcesLabel)}</summary>${sourceItems}</details>
+      </section>
+    `;
+  }).join('');
+
+  screen().innerHTML = `
+    <div class="card">
+      <h2>${escapeHtml(ui.reviewTitle)}</h2>
+      <p class="review-intro">${escapeHtml(ui.reviewIntro)}</p>
+      <p id="draft-save-status" class="review-hint" aria-live="polite"></p>
+      <div class="review-meta">
+        <div><label for="book-title">${escapeHtml(ui.bookTitleLabel)}</label><input id="book-title" maxlength="140" value="${escapeHtml(state.bookTitle)}"></div>
+        <div><label for="book-subtitle">${escapeHtml(ui.bookSubtitleLabel)}</label><input id="book-subtitle" maxlength="180" value="${escapeHtml(state.bookSubtitle)}"></div>
+        <div><label for="book-dedication">${escapeHtml(ui.dedicationLabel)}</label><textarea id="book-dedication" maxlength="600" placeholder="${escapeHtml(ui.dedicationPlaceholder)}">${escapeHtml(state.dedication)}</textarea></div>
+      </div>
+      ${chapterCards || `<p class="review-error">${escapeHtml(ui.errorNoAnswers)}</p>`}
+      <div class="btn-row" style="justify-content:flex-end; margin-top:1rem;">
+        <button class="btn btn-primary" id="assemble-book">${escapeHtml(ui.createBook)}</button>
+      </div>
+      <div id="assembly-error"></div>
+    </div>
+  `;
+
+  updateDraftStatus(saveLocalBackup());
+
+  $('book-title').addEventListener('input', event => { state.bookTitle = event.target.value; scheduleLocalBackup(); });
+  $('book-subtitle').addEventListener('input', event => { state.bookSubtitle = event.target.value; scheduleLocalBackup(); });
+  $('book-dedication').addEventListener('input', event => { state.dedication = event.target.value; scheduleLocalBackup(); });
+  document.querySelectorAll('[data-narrative-index]').forEach(textarea => {
+    textarea.addEventListener('input', event => { state.narratives[Number(event.target.dataset.narrativeIndex)] = event.target.value; scheduleLocalBackup(); });
+  });
+  document.querySelectorAll('[data-regenerate-index]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const index = Number(button.dataset.regenerateIndex);
+      const textarea = $(`review-text-${index}`);
+      button.disabled = true;
+      button.textContent = ui.regenerateWorking;
+      try {
+        const revised = await generateNarrative(chaps[index].title, byChapter[index]);
+        state.narratives[index] = revised;
+        delete state.narrativeErrors[index];
+        textarea.value = revised;
+        textarea.focus();
+        button.closest('.review-chapter').querySelector('.review-error')?.remove();
+        button.disabled = false;
+        button.textContent = ui.regenerateChapter;
+      } catch (error) {
+        state.narrativeErrors[index] = error.message || 'Generation failed';
+        const card = button.closest('.review-chapter');
+        let notice = card.querySelector('.review-error');
+        if (!notice) {
+          notice = document.createElement('p');
+          notice.className = 'review-error';
+          notice.setAttribute('role', 'alert');
+          card.insertBefore(notice, card.querySelector('label'));
+        }
+        notice.textContent = ui.regenerateError;
+        button.disabled = false;
+        button.textContent = ui.regenerateChapter;
+      }
+      updateDraftStatus(saveLocalBackup());
+    });
+  });
+
+  $('assemble-book').addEventListener('click', async () => {
+    const button = $('assemble-book');
+    const errorBox = $('assembly-error');
+    state.bookTitle = $('book-title').value.trim();
+    state.bookSubtitle = $('book-subtitle').value.trim();
+    state.dedication = $('book-dedication').value.trim();
+    updateDraftStatus(saveLocalBackup());
+    const hasText = state.narratives.some(text => typeof text === 'string' && text.trim());
+    const hasErrors = Object.keys(state.narrativeErrors || {}).length > 0;
+    if (!hasText || hasErrors) {
+      errorBox.innerHTML = `<p class="review-error" role="alert">${escapeHtml(ui.regenerateError)}</p>`;
+      return;
+    }
+    button.disabled = true;
+    button.textContent = ui.generating;
+    errorBox.textContent = '';
+    try {
+      state.docxBlob = await generateDocx(state.narratives, state.photos, state.coverImageB64);
+      renderFinalScreen();
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = ui.createBook;
+      errorBox.textContent = ui.assemblyError;
+    }
+  });
 }
 
 function renderFinalScreen() {
@@ -2099,6 +2475,7 @@ function renderFinalScreen() {
       <span class="book-icon">📖</span>
       <h2>${ui.finalTitle}</h2>
       <div class="final-name">${escapeHtml(state.authorName)}</div>
+      <p>${escapeHtml(state.bookTitle)}</p>
       <p>${ui.finalMessage}</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn btn-primary" id="dl-btn" style="padding:.85rem 2.25rem;">${ui.downloadBtn}</button>
@@ -2108,7 +2485,7 @@ function renderFinalScreen() {
   `;
 
   $('dl-btn').addEventListener('click', () => {
-    const filename = `${state.authorName.replace(/\s+/g,'_')}_memorias.docx`;
+    const filename = `${safeFileName(state.bookTitle || state.authorName)}.docx`;
     const url = URL.createObjectURL(state.docxBlob);
     const a   = document.createElement('a');
     a.href = url; a.download = filename;
@@ -2117,7 +2494,7 @@ function renderFinalScreen() {
   });
 
   $('restart-btn').addEventListener('click', () => {
-    Object.assign(state, { lang:null, apiKey:'', authorName:'', chapterIdx:0, questionIdx:0, answers:[], docxBlob:null, photos:{}, coverImageB64:null });
+    Object.assign(state, { lang:null, apiKey:'', apiConsent:false, authorName:'', chapterIdx:0, questionIdx:0, answers:[], docxBlob:null, photos:{}, coverImageB64:null, narratives:[], narrativeErrors:{}, bookTitle:'', bookSubtitle:'', dedication:'' });
     renderLangScreen();
   });
 }

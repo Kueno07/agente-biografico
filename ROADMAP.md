@@ -21,9 +21,21 @@ Os limites que mais afetam a confiança e a qualidade são:
 - O texto das memórias fica em `localStorage` sem criptografia; quem usa o mesmo perfil do navegador pode acessá-lo.
 - Respostas são enviadas diretamente ao provedor de IA selecionado. Não há camada intermediária para controlar retenção, cobrança ou disponibilidade.
 - A chave fica na memória da página, mas não está protegida contra quem controla o dispositivo ou a sessão do navegador.
-- Não há testes automatizados nem validação documentada do DOCX em diferentes leitores.
-- A recuperação automática não inclui fotos, capa nem chave. Não há um fluxo de exclusão claramente documentado para apagar a sessão salva.
-- O usuário não tem uma etapa estruturada para revisar e corrigir a narrativa antes da exportação final.
+- A suíte automatizada cobre estrutura inicial do ZIP/DOCX, backup e prompts; ainda não cobre o fluxo de interface nem falhas de rede e armazenamento.
+- A recuperação automática não inclui fotos, capa nem chave. O texto permanece sem criptografia no armazenamento local.
+- A narrativa ainda depende da qualidade de resposta do provedor escolhido. Não há avaliação com saídas reais nem validação por leitores beta.
+
+## Progresso de implementação
+
+**Atualizado em 2026-10-19.** As fases abaixo estão parcialmente implementadas; os pontos restantes continuam no roadmap.
+
+- **Fase 0 — parcial:** o app pede consentimento antes de enviar respostas ao provedor de IA e oferece apagar o backup local. A cópia continua sem criptografia; a decisão não cobre compartilhamento do dispositivo, fotos e capa não entram no backup, e o app não consegue apagar cópias baixadas nem dados retidos por provedores.
+- **Fase 1 — parcial:** o backup local versão 2 recupera respostas, capítulos editados, título, subtítulo e dedicatória. A restauração leva para a revisão quando os capítulos já foram gerados. Validação contra dados corrompidos e armazenamento de fotos/capa continuam pendentes.
+- **Fase 2 — parcial:** as perguntas e instruções de escrita foram revistas nos quatro idiomas para reduzir pressupostos e preservar os fatos. O usuário edita capítulos, consulta as respostas que serviram de base, pede nova redação e ajusta título, subtítulo e dedicatória. O DOCX ganhou sumário atualizável, metadados e paginação. A qualidade literária de respostas reais dos provedores ainda não foi avaliada.
+- **Fase 3 — parcial:** há seis testes locais sem chamadas externas para ZIP/DOCX, metadados, backup, nomes de arquivo e requisitos dos prompts. O app continua num único arquivo; ainda não há teste ponta a ponta da interface.
+- **Fase 4 — pendente:** não houve teste moderado nem publicação de amostra fictícia atualizada.
+
+Um DOCX sintético foi aberto e exportado para PDF pelo Microsoft Word para inspeção de layout. A amostra não usou conteúdo pessoal nem um provedor de IA.
 
 ## Princípios de decisão
 
@@ -146,20 +158,21 @@ A decisão deve considerar ameaça, custo de suporte, cobrança dos provedores, 
 
 ## Plano de validação
 
-Não executar testes nesta etapa de planejamento. Na implementação, acrescentar e registrar pelo menos:
+Já existem seis testes locais em `tests/app.test.cjs`, executáveis com `node --test tests/app.test.cjs`. Eles não fazem chamadas de rede. O ZIP/DOCX gerado com conteúdo fictício também foi aberto no Microsoft Word e convertido em PDF para inspeção visual; o renderizador LibreOffice empacotado não está disponível neste ambiente.
 
-- testes unitários para serialização, validação e recuperação da sessão;
+Ainda faltam:
+
 - testes de interface para avançar, voltar, editar, pular, apagar e restaurar;
-- testes com respostas inválidas, timeout, ausência de rede e indisponibilidade de armazenamento;
-- teste estrutural do pacote DOCX e abertura manual em Word e LibreOffice;
-- verificação manual nos navegadores desktop e mobile suportados;
-- fluxo completo usando dados fictícios e uma chave de teste com limites controlados.
+- testes de respostas inválidas, timeout, ausência de rede e indisponibilidade de armazenamento;
+- abrir o mesmo DOCX no LibreOffice, caso esse leitor entre na matriz suportada;
+- testar navegadores desktop e mobile definidos como alvo;
+- avaliar narrativa real com dados fictícios e um provedor/chave de teste com custo controlado.
 
 Cada rodada deve registrar ambiente, navegador, provedor/modelo quando aplicável, resultado observado e pendências. Não colocar respostas pessoais em logs, capturas de tela ou fixtures.
 
 ## Próxima fatia de implementação
 
-Começar pela **Fase 0**, seguida do formato versionado e da recuperação da **Fase 1**. Evitar reescrever toda a aplicação antes de fechar esses contratos. Ao concluir M1, validar com o proprietário usando uma história fictícia; só então investir na refatoração modular e nas melhorias editoriais maiores.
+Próximo: completar a validação do backup e das falhas locais; em seguida, revisar a narrativa produzida por cada provedor com dados fictícios, sem divulgar que está validada antes dessa avaliação. A refatoração modular e a publicação de portfólio continuam depois que o fluxo de livro for confiável.
 
 ## Decisões ainda abertas
 
