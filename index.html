@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agente Biográfico</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23C97B2A%22%2F%3E%3Cpath%20d%3D%22M16%209c-3-1.6-7-1.6-9-1v15c2-0.6%206-0.6%209%201%203-1.6%207-1.6%209-1V8c-2-0.6-6-0.6-9%201z%22%20fill%3D%22%23F7F2EA%22%2F%3E%3Cpath%20d%3D%22M16%209v15%22%20stroke%3D%22%23C97B2A%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M7.8%2011.6c1.6-0.4%204-0.4%205.7%20.4M7.8%2014.4c1.6-0.4%204-0.4%205.7%20.4M18.5%2012c1.7-0.8%204.1-0.8%205.7-.4M18.5%2014.8c1.7-0.8%204.1-0.8%205.7-.4%22%20stroke%3D%22%23C97B2A%22%20stroke-width%3D%220.9%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%20opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%2214.7%22%20y%3D%222.5%22%20width%3D%222.6%22%20height%3D%226%22%20rx%3D%220.6%22%20fill%3D%22%2302B793%22%2F%3E%3C%2Fsvg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23C97B2A%22%2F%3E%3Cpath%20d%3D%22M16%209c-3-1.6-7-1.6-9-1v15c2-0.6%206-0.6%209%201%203-1.6%207-1.6%209-1V8c-2-0.6-6-0.6-9%201z%22%20fill%3D%22%23F7F2EA%22%2F%3E%3Cpath%20d%3D%22M16%209v15%22%20stroke%3D%22%23C97B2A%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M7.8%2011.6c1.6-0.4%204-0.4%205.7%20.4M7.8%2014.4c1.6-0.4%204-0.4%205.7%20.4M18.5%2012c1.7-0.8%204.1-0.8%205.7-.4M18.5%2014.8c1.7-0.8%204.1-0.8%205.7-.4%22%20stroke%3D%22%23C97B2A%22%20stroke-width%3D%220.9%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%20opacity%3D%220.55%22%2F%3E%3Crect%20x%3D%2214.7%22%20y%3D%222.5%22%20width%3D%222.6%22%20height%3D%226%22%20rx%3D%220.6%22%20fill%3D%22%23C97B2A%22%2F%3E%3C%2Fsvg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -14,15 +14,12 @@
       --parchment:   #EDE4D3;
       --ink:         #2B2416;
       --ink-mid:     #5C4F3A;
-      --ink-light:   #9A8B73;
+      --ink-light:   #75664F;
       --amber:       #C97B2A;
       --amber-light: #E8A84E;
       --amber-pale:  #FBF0DE;
       --amber-deep:  #A0601A;
       --red-warn:    #B03A2E;
-      /* Ponte com a marca techcolab (acento secundário) */
-      --teal:        #02B793;
-      --teal-deep:   #007167;
       --success:     #059669;
       --radius:      10px;
       --shadow:      0 2px 16px rgba(43,36,22,.06);
@@ -79,11 +76,6 @@
       font-weight: 600;
       letter-spacing: -.02em;
       line-height: 1.2;
-      /* Título em gradiente — eco do design system techcolab (âmbar → teal) */
-      background: linear-gradient(100deg, var(--amber-deep) 0%, var(--amber) 45%, var(--teal) 135%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
       color: var(--amber-deep);
     }
     header p.subtitle {
@@ -131,7 +123,7 @@
     #progress-fill {
       height: 100%;
       /* Progresso âmbar → teal: caminho do calor pessoal rumo à conclusão (marca) */
-      background: linear-gradient(90deg, var(--amber-deep), var(--amber) 55%, var(--teal));
+      background: var(--amber-deep);
       border-radius: 99px;
       transition: width .6s cubic-bezier(.4,0,.2,1);
       width: 0%;
@@ -516,7 +508,7 @@
       text-transform: uppercase;
       letter-spacing: .05em;
       color: #fff;
-      background: var(--teal); /* acento da marca techcolab, contrasta com o card âmbar */
+      background: var(--amber-deep);
       padding: .2rem .55rem;
       border-radius: 99px;
     }
@@ -562,8 +554,8 @@ const LANGS = {
       providerLabel: 'Provedor de IA',
       apiKeyLabel: 'Chave de API',
       apiKeyPlaceholder: 'sk-ant-...',
-      apiKeyHint: 'A chave é usada apenas no seu navegador e nunca é armazenada.',
-      getKeyLabel: 'Não tem uma chave? Gere gratuitamente aqui',
+      apiKeyHint: 'A chave fica apenas na memória desta página. Suas respostas são enviadas diretamente ao provedor escolhido para gerar perguntas e o livro. Consulte os termos do provedor.',
+      getKeyLabel: 'Criar ou consultar chave no provedor',
       authorNameLabel: 'Seu nome completo',
       authorNamePlaceholder: 'Como você quer ser identificado no livro',
       startBtn: 'Começar minha história →',
@@ -595,6 +587,7 @@ const LANGS = {
       coverUpload: '📁 Usar minha foto',
       coverGenerating: 'Gerando capa…',
       coverError: 'Não foi possível gerar a capa. Tente novamente ou use sua própria foto.',
+      coverPrivacyNotice: 'A capa é solicitada a um serviço externo. O pedido não inclui seu nome nem suas respostas.',
       photoLabel: '📷 Adicionar fotos a este capítulo (opcional)',
       photoHint: 'Clique ou arraste imagens aqui — serão aplicadas em sépia no livro',
       genLoadingIcon: '✍️',
@@ -654,8 +647,8 @@ const LANGS = {
       providerLabel: 'AI Provider',
       apiKeyLabel: 'API Key',
       apiKeyPlaceholder: 'sk-ant-...',
-      apiKeyHint: 'Your key is used only in your browser and never stored.',
-      getKeyLabel: 'No key yet? Get one for free here',
+      apiKeyHint: 'Your key stays in this page memory. Your answers are sent directly to the selected provider to generate questions and the book. Check the provider terms.',
+      getKeyLabel: 'Create or manage a key with the provider',
       authorNameLabel: 'Your full name',
       authorNamePlaceholder: 'As you want to appear in the book',
       startBtn: 'Begin my story →',
@@ -687,6 +680,7 @@ const LANGS = {
       coverUpload: '📁 Use my own photo',
       coverGenerating: 'Generating cover…',
       coverError: 'Could not generate cover. Try again or upload your own photo.',
+      coverPrivacyNotice: 'The cover request goes to an external service. It does not include your name or answers.',
       photoLabel: '📷 Add photos to this chapter (optional)',
       photoHint: 'Click or drag images here — they will appear in sepia in the book',
       genLoadingIcon: '✍️',
@@ -746,8 +740,8 @@ const LANGS = {
       providerLabel: 'KI-Anbieter',
       apiKeyLabel: 'API-Schlüssel',
       apiKeyPlaceholder: 'sk-ant-...',
-      apiKeyHint: 'Ihr Schlüssel wird nur in Ihrem Browser verwendet und nie gespeichert.',
-      getKeyLabel: 'Noch keinen Schlüssel? Hier kostenlos erhalten',
+      apiKeyHint: 'Ihr Schlüssel bleibt im Arbeitsspeicher dieser Seite. Ihre Antworten werden direkt an den gewählten Anbieter gesendet, um Fragen und das Buch zu erstellen. Bitte prüfen Sie dessen Bedingungen.',
+      getKeyLabel: 'Schlüssel beim Anbieter erstellen oder verwalten',
       authorNameLabel: 'Ihr vollständiger Name',
       authorNamePlaceholder: 'Wie Sie im Buch erscheinen möchten',
       startBtn: 'Meine Geschichte beginnen →',
@@ -779,6 +773,7 @@ const LANGS = {
       coverUpload: '📁 Eigenes Foto verwenden',
       coverGenerating: 'Cover wird erstellt…',
       coverError: 'Cover konnte nicht erstellt werden. Versuchen Sie es erneut oder laden Sie Ihr eigenes Foto hoch.',
+      coverPrivacyNotice: 'Die Coveranfrage geht an einen externen Dienst. Ihr Name und Ihre Antworten werden nicht mitgesendet.',
       photoLabel: '📷 Fotos zu diesem Kapitel hinzufügen (optional)',
       photoHint: 'Klicken oder ziehen Sie Bilder hierher — sie erscheinen im Buch in Sepia',
       genLoadingIcon: '✍️',
@@ -838,8 +833,8 @@ const LANGS = {
       providerLabel: 'Proveedor de IA',
       apiKeyLabel: 'Clave de API',
       apiKeyPlaceholder: 'sk-ant-...',
-      apiKeyHint: 'Tu clave se usa solo en tu navegador y nunca se almacena.',
-      getKeyLabel: '¿No tienes una clave? Consíguela gratis aquí',
+      apiKeyHint: 'Tu clave permanece en la memoria de esta página. Tus respuestas se envían directamente al proveedor elegido para generar preguntas y el libro. Consulta sus condiciones.',
+      getKeyLabel: 'Crear o administrar una clave con el proveedor',
       authorNameLabel: 'Tu nombre completo',
       authorNamePlaceholder: 'Como quieres aparecer en el libro',
       startBtn: 'Comenzar mi historia →',
@@ -871,6 +866,7 @@ const LANGS = {
       coverUpload: '📁 Usar mi propia foto',
       coverGenerating: 'Generando portada…',
       coverError: 'No se pudo generar la portada. Intenta de nuevo o usa tu propia foto.',
+      coverPrivacyNotice: 'La solicitud de portada va a un servicio externo. No incluye tu nombre ni tus respuestas.',
       photoLabel: '📷 Agregar fotos a este capítulo (opcional)',
       photoHint: 'Haz clic o arrastra imágenes aquí — aparecerán en sepia en el libro',
       genLoadingIcon: '✍️',
@@ -941,53 +937,53 @@ const state = {
 };
 
 const PROVIDERS = {
-  groq:   { label: 'Groq (Llama 3.3)', placeholder: 'gsk_...', model: 'llama-3.3-70b-versatile', free: true, keyUrl: 'https://console.groq.com/keys' },
-  gemini: { label: 'Google Gemini', placeholder: 'AIza...', model: 'gemini-2.0-flash', free: true, keyUrl: 'https://aistudio.google.com/apikey' },
-  openai: { label: 'OpenAI (GPT-4o mini)', placeholder: 'sk-...', model: 'gpt-4o-mini', free: false, keyUrl: 'https://platform.openai.com/api-keys' },
-  claude: { label: 'Claude / Anthropic', placeholder: 'sk-ant-...', model: 'claude-sonnet-4-20250514', free: false, keyUrl: 'https://console.anthropic.com/settings/keys' },
+  groq:   { label: 'Groq (GPT-OSS 120B)', placeholder: 'gsk_...', model: 'openai/gpt-oss-120b', keyUrl: 'https://console.groq.com/keys' },
+  gemini: { label: 'Google Gemini 3.8 Flash', placeholder: 'AIza...', model: 'gemini-3.8-flash', keyUrl: 'https://aistudio.google.com/apikey' },
+  openai: { label: 'OpenAI (GPT-4o mini)', placeholder: 'sk-...', model: 'gpt-4o-mini', keyUrl: 'https://platform.openai.com/api-keys' },
+  claude: { label: 'Claude Sonnet 4.6', placeholder: 'sk-ant-...', model: 'claude-sonnet-4-6', keyUrl: 'https://console.anthropic.com/settings/keys' },
 };
 
-// Onboarding: como criar a chave gratuita (Groq / Gemini), por idioma
+// Onboarding: criar chaves de API com Groq ou Gemini
 const KEYGUIDE = {
   pt: {
-    title: 'Primeiro, crie sua chave gratuita',
-    intro: 'Para escrever seu livro, este app usa uma inteligência artificial. Você precisa de uma "chave" gratuita — pense nela como uma senha que conecta o app à IA. Leva 2 minutos. Escolha uma das opções:',
+    title: 'Conecte um provedor de IA',
+    intro: 'Para gerar perguntas e escrever seu livro, escolha um provedor e use uma chave de API. O provedor pode cobrar pelo uso; confira os preços e os termos antes de continuar.',
     recommended: 'Recomendado',
-    groqSteps: ['Clique em "Abrir Groq" abaixo', 'Entre com sua conta Google (ou crie uma conta gratuita)', 'Clique em "Create API Key", dê um nome qualquer e confirme', 'Copie a chave (começa com gsk_) e volte aqui'],
-    geminiSteps: ['Clique em "Abrir Google AI Studio" abaixo', 'Entre com sua conta Google', 'Clique em "Create API key" e confirme', 'Copie a chave (começa com AIza) e volte aqui'],
+    groqSteps: ['Clique em "Abrir Groq" abaixo', 'Entre ou crie uma conta no provedor', 'Crie uma chave de API e confira as condições de uso', 'Copie a chave e volte aqui'],
+    geminiSteps: ['Clique em "Abrir Google AI Studio" abaixo', 'Entre com sua conta Google', 'Crie uma chave de API e confira as condições de uso', 'Copie a chave e volte aqui'],
     openGroq: 'Abrir Groq ↗', openGemini: 'Abrir Google AI Studio ↗',
     haveKeyBtn: 'Já tenho minha chave →',
-    safety: '🔒 Sua chave fica só no seu navegador. Nunca é enviada para nós nem armazenada.',
+    safety: '🔒 A chave não é enviada ao projeto nem salva no backup. O app a envia diretamente ao provedor escolhido junto com cada solicitação.',
   },
   en: {
-    title: 'First, create your free key',
-    intro: 'To write your book, this app uses an artificial intelligence. You need a free "key" — think of it as a password that connects the app to the AI. It takes 2 minutes. Pick one option:',
+    title: 'Connect an AI provider',
+    intro: 'This app uses an AI provider to generate questions and write your book. Choose a provider and use an API key. The provider may charge for usage; check its pricing and terms first.',
     recommended: 'Recommended',
-    groqSteps: ['Click "Open Groq" below', 'Sign in with your Google account (or create a free account)', 'Click "Create API Key", give it any name and confirm', 'Copy the key (starts with gsk_) and come back here'],
-    geminiSteps: ['Click "Open Google AI Studio" below', 'Sign in with your Google account', 'Click "Create API key" and confirm', 'Copy the key (starts with AIza) and come back here'],
+    groqSteps: ['Click "Open Groq" below', 'Sign in or create an account with the provider', 'Create an API key and check the usage terms', 'Copy the key and come back here'],
+    geminiSteps: ['Click "Open Google AI Studio" below', 'Sign in with your Google account', 'Create an API key and check the usage terms', 'Copy the key and come back here'],
     openGroq: 'Open Groq ↗', openGemini: 'Open Google AI Studio ↗',
     haveKeyBtn: 'I have my key →',
-    safety: '🔒 Your key stays only in your browser. It is never sent to us or stored.',
+    safety: '🔒 The key is not sent to this project or saved in the backup. The app sends it directly to your selected provider with each request.',
   },
   de: {
-    title: 'Erstellen Sie zuerst Ihren kostenlosen Schlüssel',
-    intro: 'Um Ihr Buch zu schreiben, nutzt diese App eine künstliche Intelligenz. Sie benötigen einen kostenlosen „Schlüssel" — wie ein Passwort, das die App mit der KI verbindet. Es dauert 2 Minuten. Wählen Sie eine Option:',
+    title: 'Verbinden Sie einen KI-Anbieter',
+    intro: 'Diese App nutzt einen KI-Anbieter, um Fragen und das Buch zu erstellen. Wählen Sie einen Anbieter und verwenden Sie einen API-Schlüssel. Es können Kosten entstehen; prüfen Sie vorher Preise und Bedingungen.',
     recommended: 'Empfohlen',
-    groqSteps: ['Klicken Sie unten auf „Groq öffnen"', 'Melden Sie sich mit Ihrem Google-Konto an (oder erstellen Sie ein kostenloses Konto)', 'Klicken Sie auf „Create API Key", geben Sie einen Namen ein und bestätigen Sie', 'Kopieren Sie den Schlüssel (beginnt mit gsk_) und kommen Sie zurück'],
-    geminiSteps: ['Klicken Sie unten auf „Google AI Studio öffnen"', 'Melden Sie sich mit Ihrem Google-Konto an', 'Klicken Sie auf „Create API key" und bestätigen Sie', 'Kopieren Sie den Schlüssel (beginnt mit AIza) und kommen Sie zurück'],
+    groqSteps: ['Klicken Sie unten auf „Groq öffnen"', 'Melden Sie sich beim Anbieter an oder erstellen Sie ein Konto', 'Erstellen Sie einen API-Schlüssel und prüfen Sie die Nutzungsbedingungen', 'Kopieren Sie den Schlüssel und kehren Sie zurück'],
+    geminiSteps: ['Klicken Sie unten auf „Google AI Studio öffnen"', 'Melden Sie sich mit Ihrem Google-Konto an', 'Erstellen Sie einen API-Schlüssel und prüfen Sie die Nutzungsbedingungen', 'Kopieren Sie den Schlüssel und kehren Sie zurück'],
     openGroq: 'Groq öffnen ↗', openGemini: 'Google AI Studio öffnen ↗',
     haveKeyBtn: 'Ich habe meinen Schlüssel →',
-    safety: '🔒 Ihr Schlüssel bleibt nur in Ihrem Browser. Er wird nie an uns gesendet oder gespeichert.',
+    safety: '🔒 Der Schlüssel wird nicht an dieses Projekt gesendet und nicht im Backup gespeichert. Die App sendet ihn mit jeder Anfrage direkt an den gewählten Anbieter.',
   },
   es: {
-    title: 'Primero, crea tu clave gratuita',
-    intro: 'Para escribir tu libro, esta app usa una inteligencia artificial. Necesitas una "clave" gratuita — piénsala como una contraseña que conecta la app con la IA. Toma 2 minutos. Elige una opción:',
+    title: 'Conecta un proveedor de IA',
+    intro: 'Esta app usa un proveedor de IA para generar preguntas y escribir el libro. Elige un proveedor y usa una clave de API. Puede haber cargos; consulta antes los precios y las condiciones.',
     recommended: 'Recomendado',
-    groqSteps: ['Haz clic en "Abrir Groq" abajo', 'Inicia sesión con tu cuenta de Google (o crea una cuenta gratuita)', 'Haz clic en "Create API Key", ponle cualquier nombre y confirma', 'Copia la clave (empieza con gsk_) y vuelve aquí'],
-    geminiSteps: ['Haz clic en "Abrir Google AI Studio" abajo', 'Inicia sesión con tu cuenta de Google', 'Haz clic en "Create API key" y confirma', 'Copia la clave (empieza con AIza) y vuelve aquí'],
+    groqSteps: ['Haz clic en "Abrir Groq" abajo', 'Inicia sesión o crea una cuenta con el proveedor', 'Crea una clave de API y consulta las condiciones de uso', 'Copia la clave y vuelve aquí'],
+    geminiSteps: ['Haz clic en "Abrir Google AI Studio" abajo', 'Inicia sesión con tu cuenta de Google', 'Crea una clave de API y consulta las condiciones de uso', 'Copia la clave y vuelve aquí'],
     openGroq: 'Abrir Groq ↗', openGemini: 'Abrir Google AI Studio ↗',
     haveKeyBtn: 'Ya tengo mi clave →',
-    safety: '🔒 Tu clave queda solo en tu navegador. Nunca se envía a nosotros ni se almacena.',
+    safety: '🔒 La clave no se envía a este proyecto ni se guarda en la copia de seguridad. La app la envía directamente al proveedor elegido con cada solicitud.',
   },
 };
 
@@ -998,6 +994,9 @@ const $ = id => document.getElementById(id);
 const screen = () => $('screen');
 const t = () => LANGS[state.lang].ui;
 const chapters = () => LANGS[state.lang].chapters;
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[char]));
 
 function setProgress(current, total, chapterName) {
   const pct = total ? Math.round((current / total) * 100) : 0;
@@ -1022,14 +1021,14 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
   const key = state.apiKey;
 
   if (p === 'gemini') {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${PROVIDERS.gemini.model}:generateContent?key=${key}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${PROVIDERS.gemini.model}:generateContent`;
     const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
         contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-        generationConfig: { maxOutputTokens: maxTokens, temperature: 0.85 },
+        generationConfig: { maxOutputTokens: maxTokens },
       }),
     });
     if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || res.statusText); }
@@ -1252,9 +1251,9 @@ async function composeMosaic(b64list, targetW = 1200) {
   });
 }
 
-async function fetchCoverImage(authorName, chap1Summary) {
+async function fetchCoverImage() {
   const prompt = encodeURIComponent(
-    `vintage sepia memoir book cover, warm candlelight, handwritten pages, old photographs, soft bokeh, biographical portrait, person named ${authorName}, ${chap1Summary}, painterly, nostalgic`
+    'vintage sepia memoir book cover, warm candlelight, handwritten pages, old photographs, soft bokeh, painterly, nostalgic, no text, no identifiable person'
   );
   const url = `https://image.pollinations.ai/prompt/${prompt}?width=800&height=1100&nologo=true&seed=${Date.now()}`;
   try {
@@ -1595,7 +1594,7 @@ function renderLangScreen() {
       banner.className = 'notice info';
       banner.style.cssText = 'margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;';
       banner.innerHTML = `
-        <span>💾 ${ui ? ui.backupFound : 'Session found'}: <strong>${b.authorName}</strong> — ${b.answers.length} respostas (${saved})</span>
+        <span>💾 ${ui ? ui.backupFound : 'Session found'}: <strong>${escapeHtml(b.authorName)}</strong> — ${b.answers.length} respostas (${saved})</span>
         <button id="restore-btn" class="btn btn-secondary" style="font-size:.82rem; padding:.4rem .9rem;">${ui ? ui.backupRestore : 'Restore'}</button>
       `;
       screen().prepend(banner);
@@ -1638,7 +1637,7 @@ function renderLangScreen() {
   });
 }
 
-// ── Tela 0.5: como criar a chave gratuita (primeiro passo) ──
+// ── Tela 0.5: conexão com provedores de IA ──
 function renderKeyGuideScreen() {
   const g = KEYGUIDE[state.lang] || KEYGUIDE.en;
   const stepList = steps => steps.map(s => `<li>${s}</li>`).join('');
@@ -1685,10 +1684,10 @@ function renderSetupScreen() {
         <label>${ui.providerLabel}</label>
         <div style="position:relative;">
           <select id="provider-select">
-            <option value="groq" selected>🟢 Groq (Llama 3.3) — ${ui.providerLabel === 'Provedor de IA' ? 'gratuito' : 'free'}</option>
-            <option value="gemini">🟢 Google Gemini — ${ui.providerLabel === 'Provedor de IA' ? 'gratuito' : 'free'}</option>
-            <option value="openai">🔵 OpenAI (GPT-4o mini) — ${ui.providerLabel === 'Provedor de IA' ? 'pago' : 'paid'}</option>
-            <option value="claude">🔵 Claude / Anthropic — ${ui.providerLabel === 'Provedor de IA' ? 'pago' : 'paid'}</option>
+            <option value="groq" selected>🟢 ${PROVIDERS.groq.label}</option>
+            <option value="gemini">🟢 ${PROVIDERS.gemini.label}</option>
+            <option value="openai">🔵 ${PROVIDERS.openai.label}</option>
+            <option value="claude">🔵 ${PROVIDERS.claude.label}</option>
           </select>
           <span style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-light);">▾</span>
         </div>
@@ -1744,10 +1743,10 @@ function renderQuestionScreen() {
 
   if (state.chapterIdx === 0 && state.questionIdx === 0 && state.authorName) {
     const greetMap = {
-      pt: `${state.authorName}, feche os olhos e pense na casa onde você cresceu. O que você vê, ouve ou sente quando está lá?`,
-      en: `${state.authorName}, close your eyes and think of the house where you grew up. What do you see, hear, or feel when you are there?`,
-      de: `${state.authorName}, schließen Sie die Augen und denken Sie an das Haus, in dem Sie aufgewachsen sind. Was sehen, hören oder fühlen Sie?`,
-      es: `${state.authorName}, cierra los ojos y piensa en la casa donde creciste. ¿Qué ves, escuchas o sientes cuando estás allí?`,
+      pt: `${escapeHtml(state.authorName)}, feche os olhos e pense na casa onde você cresceu. O que você vê, ouve ou sente quando está lá?`,
+      en: `${escapeHtml(state.authorName)}, close your eyes and think of the house where you grew up. What do you see, hear, or feel when you are there?`,
+      de: `${escapeHtml(state.authorName)}, schließen Sie die Augen und denken Sie an das Haus, in dem Sie aufgewachsen sind. Was sehen, hören oder fühlen Sie?`,
+      es: `${escapeHtml(state.authorName)}, cierra los ojos y piensa en la casa donde creciste. ¿Qué ves, escuchas o sientes cuando estás allí?`,
     };
     question = greetMap[state.lang] || question;
   }
@@ -1877,7 +1876,7 @@ async function handleNextClick(question, chapterTitle) {
       $('ai-response-zone').innerHTML = `
         <div class="ai-followup-wrap">
           <div class="ai-followup-label">${ui.aiAsksLabel}</div>
-          <div class="ai-followup-text">${fq}</div>
+          <div class="ai-followup-text">${escapeHtml(fq)}</div>
         </div>
       `;
       $('answer-label').style.display = 'none';
@@ -1960,6 +1959,7 @@ function renderGenerateScreen() {
         <input type="file" id="cover-upload-input" accept="image/*" style="display:none;"/>
       </div>
       <p id="cover-status" style="text-align:center; font-size:.82rem; color:var(--ink-light); margin-top:.75rem;"></p>
+      <p style="text-align:center; font-size:.78rem; color:var(--ink-light);">${ui.coverPrivacyNotice}</p>
       <div class="ornament-divider">✦ ✦ ✦</div>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn btn-primary" id="generate-btn" style="padding:.85rem 2.5rem; font-size:1rem;">${ui.finishBtn}</button>
@@ -1990,8 +1990,7 @@ function renderGenerateScreen() {
   async function doGenCover() {
     $('gen-cover-btn').disabled = $('regen-cover-btn').disabled = true;
     $('cover-status').innerHTML = `<span class="spinner" style="border-top-color:var(--amber);border-color:rgba(201,123,42,.2);vertical-align:middle;display:inline-block;"></span> ${ui.coverGenerating}`;
-    const chap1Summary = (byChapter[0] || []).map(a => a.answer).filter(Boolean).join(' ').slice(0, 150);
-    const b64 = await fetchCoverImage(state.authorName, chap1Summary);
+    const b64 = await fetchCoverImage();
     $('gen-cover-btn').disabled = $('regen-cover-btn').disabled = false;
     if (b64) { showCoverPreview(b64); }
     else { $('cover-status').textContent = ui.coverError; }
@@ -2023,10 +2022,10 @@ async function runGeneration(byChapter, chaps) {
         <div class="field">
           <label>${ui.providerLabel}</label>
           <select id="gen-provider-select">
-            <option value="groq" selected>🟢 Groq (Llama 3.3)</option>
-            <option value="gemini">🟢 Google Gemini</option>
-            <option value="openai">🔵 OpenAI (GPT-4o mini)</option>
-            <option value="claude">🔵 Claude / Anthropic</option>
+            <option value="groq" selected>🟢 ${PROVIDERS.groq.label}</option>
+            <option value="gemini">🟢 ${PROVIDERS.gemini.label}</option>
+            <option value="openai">🔵 ${PROVIDERS.openai.label}</option>
+            <option value="claude">🔵 ${PROVIDERS.claude.label}</option>
           </select>
         </div>
         <div class="field">
@@ -2099,7 +2098,7 @@ function renderFinalScreen() {
     <div class="card final-hero">
       <span class="book-icon">📖</span>
       <h2>${ui.finalTitle}</h2>
-      <div class="final-name">${state.authorName}</div>
+      <div class="final-name">${escapeHtml(state.authorName)}</div>
       <p>${ui.finalMessage}</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn btn-primary" id="dl-btn" style="padding:.85rem 2.25rem;">${ui.downloadBtn}</button>
@@ -2128,4 +2127,3 @@ renderLangScreen();
 </script>
 </body>
 </html>
-
