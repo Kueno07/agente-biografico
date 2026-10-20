@@ -30,8 +30,8 @@ Os limites que mais afetam a confiança e a qualidade são:
 **Atualizado em 2026-10-19.** As fases abaixo estão parcialmente implementadas; os pontos restantes continuam no roadmap.
 
 - **Fase 0 — parcial:** o app pede consentimento antes de enviar respostas ao provedor de IA e oferece apagar o backup local. A cópia continua sem criptografia; a decisão não cobre compartilhamento do dispositivo, fotos e capa não entram no backup, e o app não consegue apagar cópias baixadas nem dados retidos por provedores.
-- **Fase 1 — parcial:** o backup local versão 2 recupera respostas, capítulos editados, título, subtítulo e dedicatória. A restauração leva para a revisão quando os capítulos já foram gerados. Validação contra dados corrompidos e armazenamento de fotos/capa continuam pendentes.
-- **Fase 2 — parcial:** as perguntas e instruções de escrita foram revistas nos quatro idiomas para reduzir pressupostos e preservar os fatos. O usuário edita capítulos, consulta as respostas que serviram de base, pede nova redação e ajusta título, subtítulo e dedicatória. O DOCX ganhou sumário atualizável, metadados e paginação. A qualidade literária de respostas reais dos provedores ainda não foi avaliada.
+- **Fase 1 — parcial:** o backup local versão 2 recupera respostas, notas opcionais por capítulo, capítulos editados, título, subtítulo e dedicatória. A tela inicial aceita importar backup JSON de até 5 MB, valida estrutura/campos antes de substituir a cópia local e sinaliza backup corrompido ou falha de salvamento. Fotos e capa continuam fora do backup.
+- **Fase 2 — parcial:** as perguntas e instruções de escrita foram revistas nos quatro idiomas para reduzir pressupostos e preservar os fatos. Notas opcionais permitem registrar contexto lembrado por fotos, objetos ou documentos; o texto da nota é salvo localmente e enviado ao provedor junto com as respostas, enquanto o arquivo visual permanece local. O usuário edita capítulos, consulta respostas e notas usadas de base, pede nova redação e ajusta título, subtítulo e dedicatória. O DOCX ganhou sumário atualizável, metadados e paginação. A qualidade literária de respostas reais dos provedores ainda não foi avaliada.
 - **Fase 3 — parcial:** há seis testes locais sem chamadas externas para ZIP/DOCX, metadados, backup, nomes de arquivo e requisitos dos prompts. O app continua num único arquivo; ainda não há teste ponta a ponta da interface.
 - **Fase 4 — pendente:** não houve teste moderado nem publicação de amostra fictícia atualizada.
 
@@ -172,7 +172,7 @@ Cada rodada deve registrar ambiente, navegador, provedor/modelo quando aplicáve
 
 ## Próxima fatia de implementação
 
-Próximo: completar a validação do backup e das falhas locais; em seguida, revisar a narrativa produzida por cada provedor com dados fictícios, sem divulgar que está validada antes dessa avaliação. A refatoração modular e a publicação de portfólio continuam depois que o fluxo de livro for confiável.
+Próximo: avaliar a narrativa produzida por cada provedor com dados inteiramente fictícios, incluindo notas complementares e lacunas deliberadas para confirmar que a IA não inventa detalhes. Registrar modelo, respostas, custo quando disponível e revisão editorial; não divulgar qualidade validada antes dessa avaliação. Depois, completar testes de falhas locais e publicar uma amostra fictícia revisada. A refatoração modular continua depois que o fluxo de livro for confiável.
 
 ## Decisões ainda abertas
 

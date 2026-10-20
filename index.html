@@ -574,7 +574,7 @@ const LANGS = {
       apiKeyLabel: 'Chave de API',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'A chave fica apenas na memória desta página. Suas respostas são enviadas diretamente ao provedor escolhido para gerar perguntas e o livro. Consulte os termos do provedor.',
-      apiConsentLabel: 'Entendo que minhas respostas serão enviadas ao provedor selecionado quando eu pedir aprofundamentos e gerar o livro. Vou conferir as condições e possíveis custos.',
+      apiConsentLabel: 'Entendo que minhas respostas podem ser enviadas ao provedor selecionado para aprofundamentos e geração do livro. As notas opcionais também serão enviadas ao gerar ou reescrever capítulos. Vou conferir as condições e possíveis custos.',
       getKeyLabel: 'Criar ou consultar chave no provedor',
       authorNameLabel: 'Seu nome completo',
       authorNamePlaceholder: 'Como você quer ser identificado no livro',
@@ -620,6 +620,11 @@ const LANGS = {
       backupRestore: 'Restaurar',
       backupDelete: 'Apagar sessão salva',
       backupDeleteConfirm: 'Apagar respostas e rascunhos salvos neste navegador? Esta ação não pode ser desfeita.',
+      backupImport: 'Importar backup JSON',
+      backupImportHint: 'O arquivo será validado antes de substituir a sessão salva neste navegador.',
+      backupImportError: 'Não foi possível importar. Confira se o arquivo é um backup válido desta ferramenta (JSON versão 2).',
+      backupImportConfirm: 'Importar este backup e substituir a sessão salva neste navegador?',
+      backupCorrupt: 'O backup local não pôde ser lido. Importe um arquivo JSON válido ou apague a cópia local.',
       coverTitle: 'Capa do livro',
       coverNone: 'Sem capa',
       coverGenerate: '🎨 Gerar capa com IA',
@@ -630,6 +635,9 @@ const LANGS = {
       coverPrivacyNotice: 'A capa é solicitada a um serviço externo. O pedido não inclui seu nome nem suas respostas.',
       photoLabel: '📷 Adicionar fotos a este capítulo (opcional)',
       photoHint: 'Clique ou arraste imagens aqui — serão aplicadas em sépia no livro',
+      chapterNoteLabel: 'Contexto que este material ajudou a lembrar (opcional)',
+      chapterNoteHint: 'Escreva só o contexto que quer usar. A nota será salva no backup e enviada à IA ao gerar ou reescrever este capítulo; a foto ou o documento não será enviado.',
+      chapterNoteSource: 'Contexto adicional informado',
       genLoadingIcon: '✍️',
       genPhrase: 'Transformando memórias em palavras…',
     },
@@ -688,7 +696,7 @@ const LANGS = {
       apiKeyLabel: 'API Key',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Your key stays in this page memory. Your answers are sent directly to the selected provider to generate questions and the book. Check the provider terms.',
-      apiConsentLabel: 'I understand my answers will be sent to the selected provider when I request follow-up questions and generate the book. I will check its terms and possible costs.',
+      apiConsentLabel: 'I understand my answers may be sent to the selected provider for follow-up questions and book generation. Optional notes are also sent when generating or rewriting chapters. I will check its terms and possible costs.',
       getKeyLabel: 'Create or manage a key with the provider',
       authorNameLabel: 'Your full name',
       authorNamePlaceholder: 'As you want to appear in the book',
@@ -734,6 +742,11 @@ const LANGS = {
       backupRestore: 'Restore',
       backupDelete: 'Delete saved session',
       backupDeleteConfirm: 'Delete the answers and drafts saved in this browser? This cannot be undone.',
+      backupImport: 'Import JSON backup',
+      backupImportHint: 'The file will be validated before replacing the saved session in this browser.',
+      backupImportError: 'Import failed. Check that this is a valid backup from this app (JSON version 2).',
+      backupImportConfirm: 'Import this backup and replace the session saved in this browser?',
+      backupCorrupt: 'The local backup could not be read. Import a valid JSON file or delete the local copy.',
       coverTitle: 'Book cover',
       coverNone: 'No cover yet',
       coverGenerate: '🎨 Generate cover with AI',
@@ -744,6 +757,9 @@ const LANGS = {
       coverPrivacyNotice: 'The cover request goes to an external service. It does not include your name or answers.',
       photoLabel: '📷 Add photos to this chapter (optional)',
       photoHint: 'Click or drag images here — they will appear in sepia in the book',
+      chapterNoteLabel: 'Context this material helped you remember (optional)',
+      chapterNoteHint: 'Write only the context you want to use. The note is saved in the backup and sent to the AI when generating or rewriting this chapter; the photo or document is not sent.',
+      chapterNoteSource: 'Additional context supplied',
       genLoadingIcon: '✍️',
       genPhrase: 'Turning memories into words…',
     },
@@ -802,7 +818,7 @@ const LANGS = {
       apiKeyLabel: 'API-Schlüssel',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Ihr Schlüssel bleibt im Arbeitsspeicher dieser Seite. Ihre Antworten werden direkt an den gewählten Anbieter gesendet, um Fragen und das Buch zu erstellen. Bitte prüfen Sie dessen Bedingungen.',
-      apiConsentLabel: 'Mir ist bewusst, dass meine Antworten an den ausgewählten Anbieter gesendet werden, wenn ich Vertiefungsfragen anfordere und das Buch erstelle. Ich prüfe dessen Bedingungen und mögliche Kosten.',
+      apiConsentLabel: 'Mir ist bewusst, dass meine Antworten für Vertiefungsfragen und die Bucherstellung an den ausgewählten Anbieter gesendet werden können. Optionale Notizen werden auch beim Erstellen oder Überarbeiten von Kapiteln gesendet. Ich prüfe dessen Bedingungen und mögliche Kosten.',
       getKeyLabel: 'Schlüssel beim Anbieter erstellen oder verwalten',
       authorNameLabel: 'Ihr vollständiger Name',
       authorNamePlaceholder: 'Wie Sie im Buch erscheinen möchten',
@@ -848,6 +864,11 @@ const LANGS = {
       backupRestore: 'Wiederherstellen',
       backupDelete: 'Gespeicherte Sitzung löschen',
       backupDeleteConfirm: 'Möchten Sie die in diesem Browser gespeicherten Antworten und Entwürfe löschen? Dies kann nicht rückgängig gemacht werden.',
+      backupImport: 'JSON-Sicherung importieren',
+      backupImportHint: 'Die Datei wird geprüft, bevor sie die gespeicherte Sitzung in diesem Browser ersetzt.',
+      backupImportError: 'Import fehlgeschlagen. Prüfen Sie, ob die Datei eine gültige Sicherung dieser App (JSON-Version 2) ist.',
+      backupImportConfirm: 'Diese Sicherung importieren und die in diesem Browser gespeicherte Sitzung ersetzen?',
+      backupCorrupt: 'Die lokale Sicherung konnte nicht gelesen werden. Importieren Sie eine gültige JSON-Datei oder löschen Sie die lokale Kopie.',
       coverTitle: 'Buchcover',
       coverNone: 'Noch kein Cover',
       coverGenerate: '🎨 Cover mit KI erstellen',
@@ -858,6 +879,9 @@ const LANGS = {
       coverPrivacyNotice: 'Die Coveranfrage geht an einen externen Dienst. Ihr Name und Ihre Antworten werden nicht mitgesendet.',
       photoLabel: '📷 Fotos zu diesem Kapitel hinzufügen (optional)',
       photoHint: 'Klicken oder ziehen Sie Bilder hierher — sie erscheinen im Buch in Sepia',
+      chapterNoteLabel: 'Kontext, an den Sie sich durch dieses Material erinnern (optional)',
+      chapterNoteHint: 'Schreiben Sie nur den gewünschten Kontext auf. Diese Notiz wird im Backup gespeichert und beim Erstellen oder Überarbeiten dieses Kapitels an die KI gesendet; das Foto oder Dokument wird nicht gesendet.',
+      chapterNoteSource: 'Zusätzlicher Kontext der Person',
       genLoadingIcon: '✍️',
       genPhrase: 'Erinnerungen werden in Worte verwandelt…',
     },
@@ -916,7 +940,7 @@ const LANGS = {
       apiKeyLabel: 'Clave de API',
       apiKeyPlaceholder: 'sk-ant-...',
       apiKeyHint: 'Tu clave permanece en la memoria de esta página. Tus respuestas se envían directamente al proveedor elegido para generar preguntas y el libro. Consulta sus condiciones.',
-      apiConsentLabel: 'Entiendo que mis respuestas se enviarán al proveedor elegido cuando solicite preguntas de seguimiento y genere el libro. Consultaré sus condiciones y posibles costos.',
+      apiConsentLabel: 'Entiendo que mis respuestas pueden enviarse al proveedor elegido para preguntas de seguimiento y para generar el libro. Las notas opcionales también se envían al generar o reescribir capítulos. Consultaré sus condiciones y posibles costos.',
       getKeyLabel: 'Crear o administrar una clave con el proveedor',
       authorNameLabel: 'Tu nombre completo',
       authorNamePlaceholder: 'Como quieres aparecer en el libro',
@@ -962,6 +986,11 @@ const LANGS = {
       backupRestore: 'Restaurar',
       backupDelete: 'Borrar sesión guardada',
       backupDeleteConfirm: '¿Borrar las respuestas y los borradores guardados en este navegador? No se puede deshacer.',
+      backupImport: 'Importar copia JSON',
+      backupImportHint: 'El archivo se validará antes de sustituir la sesión guardada en este navegador.',
+      backupImportError: 'No se pudo importar. Comprueba que sea una copia válida de esta herramienta (JSON versión 2).',
+      backupImportConfirm: '¿Importar esta copia y sustituir la sesión guardada en este navegador?',
+      backupCorrupt: 'No se pudo leer la copia local. Importa un archivo JSON válido o borra la copia local.',
       coverTitle: 'Portada del libro',
       coverNone: 'Sin portada',
       coverGenerate: '🎨 Generar portada con IA',
@@ -972,6 +1001,9 @@ const LANGS = {
       coverPrivacyNotice: 'La solicitud de portada va a un servicio externo. No incluye tu nombre ni tus respuestas.',
       photoLabel: '📷 Agregar fotos a este capítulo (opcional)',
       photoHint: 'Haz clic o arrastra imágenes aquí — aparecerán en sepia en el libro',
+      chapterNoteLabel: 'Contexto que este material te ayudó a recordar (opcional)',
+      chapterNoteHint: 'Escribe solo el contexto que quieras usar. La nota se guarda en la copia y se envía a la IA al generar o reescribir este capítulo; la foto o el documento no se envía.',
+      chapterNoteSource: 'Contexto adicional aportado',
       genLoadingIcon: '✍️',
       genPhrase: 'Convirtiendo recuerdos en palabras…',
     },
@@ -1032,6 +1064,7 @@ const state = {
   chapterIdx: 0,
   questionIdx: 0,
   answers: [],
+  chapterNotes: {},
   photos: {},
   coverImageB64: null,
   narratives: [],
@@ -1113,6 +1146,7 @@ function getBackupSnapshot() {
     lang: state.lang,
     authorName: state.authorName,
     answers: state.answers,
+    chapterNotes: state.chapterNotes,
     narratives: state.narratives,
     bookTitle: state.bookTitle,
     bookSubtitle: state.bookSubtitle,
@@ -1121,13 +1155,37 @@ function getBackupSnapshot() {
   };
 }
 
+function validateBackupSnapshot(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  if (value.schemaVersion !== 2 || !LANGS[value.lang]) return false;
+  if (typeof value.authorName !== 'string' || value.authorName.length > 200) return false;
+  if (!Array.isArray(value.answers) || value.answers.length > 100) return false;
+  if (!Array.isArray(value.narratives) || value.narratives.length > 8) return false;
+  if (typeof value.savedAt !== 'string' || !Number.isFinite(Date.parse(value.savedAt))) return false;
+  if (!['bookTitle', 'bookSubtitle', 'dedication'].every(key =>
+    typeof value[key] === 'string' && value[key].length <= 10000)) return false;
+  if (!value.narratives.every(item => typeof item === 'string' && item.length <= 100000)) return false;
+
+  const chapterCount = LANGS[value.lang].chapters.length;
+  const notes = value.chapterNotes ?? {};
+  if (!notes || typeof notes !== 'object' || Array.isArray(notes) ||
+      !Object.entries(notes).every(([index, note]) => Number.isInteger(Number(index)) &&
+        Number(index) >= 0 && Number(index) < chapterCount && typeof note === 'string' && note.length <= 3000)) return false;
+  return value.answers.every(answer => answer && typeof answer === 'object' &&
+    Number.isInteger(answer.chapterIdx) && answer.chapterIdx >= 0 && answer.chapterIdx < chapterCount &&
+    ['chapter', 'question', 'answer', 'followup', 'followupAnswer'].every(key =>
+      typeof answer[key] === 'string' && answer[key].length <= 20000));
+}
+
+let lastBackupSaveSucceeded = true;
 function saveLocalBackup() {
   try {
     localStorage.setItem('bio_backup', JSON.stringify(getBackupSnapshot()));
-    return true;
+    lastBackupSaveSucceeded = true;
   } catch (error) {
-    return false;
+    lastBackupSaveSucceeded = false;
   }
+  return lastBackupSaveSucceeded;
 }
 
 let backupSaveTimer;
@@ -1136,9 +1194,18 @@ function scheduleLocalBackup() {
   backupSaveTimer = setTimeout(() => updateDraftStatus(saveLocalBackup()), 500);
 }
 
+function hasLocalDraftContent() {
+  return state.answers.length > 0 || Object.values(state.chapterNotes || {}).some(note => typeof note === 'string' && note.trim());
+}
+
 function updateDraftStatus(saved) {
   const status = document.getElementById('draft-save-status');
   if (!status) return;
+  if (!hasLocalDraftContent()) {
+    status.textContent = '';
+    status.classList.remove('review-error');
+    return;
+  }
   status.textContent = saved ? t().draftSavedLabel : t().draftSaveError;
   status.classList.toggle('review-error', !saved);
 }
@@ -1254,7 +1321,7 @@ async function getFollowupQuestion(chapterTitle, originalQuestion, answer) {
   return callAI(sys, user, 300);
 }
 
-async function generateNarrative(chapterTitle, qas) {
+async function generateNarrative(chapterTitle, qas, chapterNote = '') {
   const lang = state.lang;
   const systemMap = {
     pt: `Você é editor e escritor de memórias. Transforme as respostas deste capítulo em prosa autobiográfica em primeira pessoa, clara, específica e natural, preservando o modo de falar e a perspectiva da pessoa.
@@ -1332,6 +1399,13 @@ Calidad narrativa:
     }
     user += '\n';
   }
+  const contextLabel = {
+    pt: 'Contexto adicional informado pela pessoa',
+    en: 'Additional context supplied by the person',
+    de: 'Zusätzlicher Kontext der Person',
+    es: 'Contexto adicional aportado por la persona',
+  }[lang] || 'Additional context supplied by the person';
+  if (chapterNote.trim()) user += `${contextLabel}:\n${chapterNote.trim()}\n`;
   return callAI(sys, user, 2200);
 }
 
@@ -1797,13 +1871,41 @@ function renderLangScreen() {
           </button>
         `).join('')}
       </div>
+      <div style="margin-top:1.25rem; text-align:center;">
+        <label class="btn btn-secondary" for="backup-import-input" style="cursor:pointer;">${LANGS.pt.ui.backupImport} / Import backup</label>
+        <input id="backup-import-input" type="file" accept="application/json,.json" style="display:none;" />
+        <p style="font-size:.8rem; color:var(--ink-light); margin:.5rem 0 0;">${LANGS.pt.ui.backupImportHint}</p>
+        <p id="backup-import-status" class="review-error" aria-live="polite" style="margin:.5rem 0 0;"></p>
+      </div>
     </div>
   `;
+
+  const importInput = document.getElementById('backup-import-input');
+  importInput.addEventListener('change', async event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const status = document.getElementById('backup-import-status');
+    try {
+      if (file.size > 5 * 1024 * 1024) throw new Error('Backup exceeds 5 MB');
+      const candidate = JSON.parse(await file.text());
+      if (!validateBackupSnapshot(candidate)) throw new Error('Invalid backup structure');
+      if (!window.confirm(LANGS[candidate.lang].ui.backupImportConfirm)) return;
+      candidate.chapterNotes ||= {};
+      localStorage.setItem('bio_backup', JSON.stringify(candidate));
+      state.lang = candidate.lang;
+      renderLangScreen();
+    } catch (error) {
+      status.textContent = LANGS[state.lang]?.ui.backupImportError || LANGS.pt.ui.backupImportError;
+    } finally {
+      event.target.value = '';
+    }
+  });
 
   try {
     const backup = localStorage.getItem('bio_backup');
     if (backup) {
       const b = JSON.parse(backup);
+      if (!validateBackupSnapshot(b)) throw new Error('Invalid local backup');
       const ui = LANGS[b.lang]?.ui;
       const saved = new Date(b.savedAt).toLocaleString();
       const banner = document.createElement('div');
@@ -1833,6 +1935,7 @@ function renderLangScreen() {
         state.lang       = b.lang;
         state.authorName = b.authorName;
         state.answers    = b.answers;
+        state.chapterNotes = b.chapterNotes || {};
         state.narratives = Array.isArray(b.narratives) ? b.narratives : [];
         state.narrativeErrors = {};
         state.bookTitle = typeof b.bookTitle === 'string' ? b.bookTitle : '';
@@ -1873,7 +1976,21 @@ function renderLangScreen() {
         renderQuestionScreen();
       });
     }
-  } catch(e) {}
+  } catch(e) {
+    const errorBanner = document.createElement('div');
+    errorBanner.className = 'notice error';
+    errorBanner.innerHTML = `<span>${LANGS[state.lang]?.ui.backupCorrupt || LANGS.pt.ui.backupCorrupt}</span> <button id="delete-corrupt-backup" class="btn btn-secondary" type="button">${LANGS.pt.ui.backupDelete}</button>`;
+    screen().prepend(errorBanner);
+    document.getElementById('delete-corrupt-backup').addEventListener('click', () => {
+      if (!window.confirm(LANGS[state.lang]?.ui.backupDeleteConfirm || LANGS.pt.ui.backupDeleteConfirm)) return;
+      try {
+        localStorage.removeItem('bio_backup');
+        errorBanner.remove();
+      } catch(error) {
+        errorBanner.querySelector('span').textContent = LANGS.pt.ui.draftSaveError;
+      }
+    });
+  }
 
   screen().querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1986,6 +2103,7 @@ function renderSetupScreen() {
     state.chapterIdx  = 0;
     state.questionIdx = 0;
     state.answers     = [];
+    state.chapterNotes = {};
     state.narratives = [];
     state.narrativeErrors = {};
     state.bookTitle = '';
@@ -2049,11 +2167,18 @@ function renderQuestionScreen() {
         <div class="photo-thumbs" id="photo-thumbs"></div>
       </div>
 
+      <div class="field" style="margin-top:1rem;">
+        <label for="chapter-note">${ui.chapterNoteLabel}</label>
+        <textarea id="chapter-note" rows="3" maxlength="3000" placeholder="...">${escapeHtml(state.chapterNotes[chapNum - 1] || '')}</textarea>
+        <p style="font-size:.78rem; color:var(--ink-light); margin-top:.35rem;">${ui.chapterNoteHint}</p>
+      </div>
+
       <div class="btn-row">
         <button class="btn btn-primary" id="next-btn">${ui.nextBtn}</button>
         <button class="btn btn-secondary" id="skip-btn">${ui.skipBtn}</button>
         ${canGoBack ? `<button class="btn btn-secondary" id="back-btn" style="margin-left:auto;">← Voltar</button>` : ''}
       </div>
+      <p id="draft-save-status" class="review-hint" aria-live="polite" style="margin:.5rem 0 0;"></p>
       <div style="margin-top:.75rem; text-align:right;">
         <button class="btn btn-secondary" id="save-now-btn" style="font-size:.78rem; padding:.35rem .85rem; color:var(--ink-light);">💾 ${ui.backupBtn.replace('⬇ ','')}</button>
       </div>
@@ -2061,6 +2186,13 @@ function renderQuestionScreen() {
   `;
 
   setProgress(chapNum, chaps.length, chap.title);
+  updateDraftStatus(hasLocalDraftContent() ? lastBackupSaveSucceeded : true);
+  $('chapter-note').addEventListener('input', event => {
+    const note = event.target.value;
+    if (note.trim()) state.chapterNotes[chapNum - 1] = note;
+    else delete state.chapterNotes[chapNum - 1];
+    scheduleLocalBackup();
+  });
 
   $('next-btn').addEventListener('click', () => handleNextClick(question, chap.title));
   $('skip-btn').addEventListener('click', () => {
@@ -2086,7 +2218,7 @@ function renderQuestionScreen() {
     const blob = new Blob([data], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
-    a.href = url; a.download = `${state.authorName.replace(/\s+/g,'_')}_respostas.json`;
+    a.href = url; a.download = `${safeFileName(state.authorName)}_respostas.json`;
     document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
   });
@@ -2234,7 +2366,7 @@ function renderGenerateScreen() {
     const blob = new Blob([data], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
-    a.href = url; a.download = `${state.authorName.replace(/\s+/g,'_')}_respostas.json`;
+    a.href = url; a.download = `${safeFileName(state.authorName)}_respostas.json`;
     document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
   });
@@ -2343,7 +2475,7 @@ async function runGeneration(byChapter, chaps) {
     if (chapNameEl) chapNameEl.textContent = `${chaps[i].title}…`;
     if (!qas || !qas.some(a => a.answer)) { state.narratives.push(null); continue; }
     try {
-      state.narratives.push(await generateNarrative(chaps[i].title, qas));
+      state.narratives.push(await generateNarrative(chaps[i].title, qas, state.chapterNotes[i] || ''));
     } catch (e) {
       state.narratives.push('');
       state.narrativeErrors[i] = e.message || 'Generation failed';
@@ -2366,6 +2498,7 @@ function renderReviewScreen(byChapter, chaps) {
     const sourceItems = qas.filter(qa => qa.answer).map(qa => `
       <div class="review-source-item"><strong>${escapeHtml(qa.question)}</strong><br>${escapeHtml(qa.answer)}${qa.followupAnswer ? `<br><br><strong>${escapeHtml(qa.followup)}</strong><br>${escapeHtml(qa.followupAnswer)}` : ''}</div>
     `).join('');
+    const chapterNote = state.chapterNotes[index]?.trim();
     const error = state.narrativeErrors?.[index];
     return `
       <section class="review-chapter" data-chapter-index="${index}">
@@ -2377,7 +2510,7 @@ function renderReviewScreen(byChapter, chaps) {
           <span class="review-hint">${escapeHtml(ui.reviewChapterHint)}</span>
           <button class="btn btn-secondary" type="button" data-regenerate-index="${index}">${escapeHtml(ui.regenerateChapter)}</button>
         </div>
-        <details class="review-sources"><summary>${escapeHtml(ui.sourcesLabel)}</summary>${sourceItems}</details>
+        <details class="review-sources"><summary>${escapeHtml(ui.sourcesLabel)}</summary>${sourceItems}${chapterNote ? `<div class="review-source-item"><strong>${escapeHtml(ui.chapterNoteSource)}</strong><br>${escapeHtml(chapterNote)}</div>` : ''}</details>
       </section>
     `;
   }).join('');
@@ -2415,7 +2548,7 @@ function renderReviewScreen(byChapter, chaps) {
       button.disabled = true;
       button.textContent = ui.regenerateWorking;
       try {
-        const revised = await generateNarrative(chaps[index].title, byChapter[index]);
+        const revised = await generateNarrative(chaps[index].title, byChapter[index], state.chapterNotes[index] || '');
         state.narratives[index] = revised;
         delete state.narrativeErrors[index];
         textarea.value = revised;
@@ -2494,7 +2627,7 @@ function renderFinalScreen() {
   });
 
   $('restart-btn').addEventListener('click', () => {
-    Object.assign(state, { lang:null, apiKey:'', apiConsent:false, authorName:'', chapterIdx:0, questionIdx:0, answers:[], docxBlob:null, photos:{}, coverImageB64:null, narratives:[], narrativeErrors:{}, bookTitle:'', bookSubtitle:'', dedication:'' });
+    Object.assign(state, { lang:null, apiKey:'', apiConsent:false, authorName:'', chapterIdx:0, questionIdx:0, answers:[], chapterNotes:{}, docxBlob:null, photos:{}, coverImageB64:null, narratives:[], narrativeErrors:{}, bookTitle:'', bookSubtitle:'', dedication:'' });
     renderLangScreen();
   });
 }
