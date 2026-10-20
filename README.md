@@ -10,7 +10,7 @@ Protótipo web que conduz uma entrevista sobre a vida de uma pessoa e transforma
 ## O que demonstra
 
 - Entrevista organizada em oito capítulos, com duas perguntas iniciais por capítulo.
-- Nota opcional por capítulo para registrar o contexto lembrado a partir de fotos, objetos ou documentos; a nota pode ser revisada junto às fontes do texto.
+- Nota opcional por capítulo para registrar o contexto lembrado a partir de fotos, objetos ou documentos; a nota pode ser revista e corrigida na tela de revisão antes de reescrever o capítulo.
 - Perguntas de aprofundamento geradas a partir das respostas, com opção de pular sem perder a resposta principal.
 - Rascunho narrativo por capítulo, com edição e nova geração antes de montar o livro.
 - Escolha de título, subtítulo e dedicatória; sumário atualizável, metadados, capítulos paginados e numeração no DOCX.

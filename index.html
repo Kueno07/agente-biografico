@@ -2507,11 +2507,14 @@ function renderReviewScreen(byChapter, chaps) {
         ${error ? `<p class="review-error" role="alert">${escapeHtml(ui.regenerateError)}</p>` : ''}
         <label for="review-text-${index}">${escapeHtml(ui.chapterTextLabel)}</label>
         <textarea id="review-text-${index}" data-narrative-index="${index}">${escapeHtml(state.narratives[index] || '')}</textarea>
+        <label for="chapter-note-review-${index}">${escapeHtml(ui.chapterNoteLabel)}</label>
+        <textarea id="chapter-note-review-${index}" data-chapter-note-index="${index}" rows="3" maxlength="3000">${escapeHtml(chapterNote || '')}</textarea>
+        <p class="review-hint">${escapeHtml(ui.chapterNoteHint)}</p>
         <div class="review-chapter-actions">
           <span class="review-hint">${escapeHtml(ui.reviewChapterHint)}</span>
           <button class="btn btn-secondary" type="button" data-regenerate-index="${index}">${escapeHtml(ui.regenerateChapter)}</button>
         </div>
-        <details class="review-sources"><summary>${escapeHtml(ui.sourcesLabel)}</summary>${sourceItems}${chapterNote ? `<div class="review-source-item"><strong>${escapeHtml(ui.chapterNoteSource)}</strong><br>${escapeHtml(chapterNote)}</div>` : ''}</details>
+        <details class="review-sources"><summary>${escapeHtml(ui.sourcesLabel)}</summary>${sourceItems}<div class="review-source-item" data-note-preview-index="${index}" style="${chapterNote ? '' : 'display:none;'}"><strong>${escapeHtml(ui.chapterNoteSource)}</strong><br><span>${escapeHtml(chapterNote || '')}</span></div></details>
       </section>
     `;
   }).join('');
@@ -2541,6 +2544,20 @@ function renderReviewScreen(byChapter, chaps) {
   $('book-dedication').addEventListener('input', event => { state.dedication = event.target.value; scheduleLocalBackup(); });
   document.querySelectorAll('[data-narrative-index]').forEach(textarea => {
     textarea.addEventListener('input', event => { state.narratives[Number(event.target.dataset.narrativeIndex)] = event.target.value; scheduleLocalBackup(); });
+  });
+  document.querySelectorAll('[data-chapter-note-index]').forEach(textarea => {
+    textarea.addEventListener('input', event => {
+      const index = Number(event.target.dataset.chapterNoteIndex);
+      const note = event.target.value;
+      if (note.trim()) state.chapterNotes[index] = note;
+      else delete state.chapterNotes[index];
+      const preview = document.querySelector(`[data-note-preview-index="${index}"]`);
+      if (preview) {
+        preview.querySelector('span').textContent = note;
+        preview.style.display = note.trim() ? '' : 'none';
+      }
+      scheduleLocalBackup();
+    });
   });
   document.querySelectorAll('[data-regenerate-index]').forEach(button => {
     button.addEventListener('click', async () => {
