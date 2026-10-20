@@ -36,6 +36,8 @@ GitHub Pages serve apenas os arquivos estáticos; não há backend do projeto.
 
 O DOCX é montado no navegador como um pacote ZIP/XML, sem biblioteca externa de geração de documentos. O backup JSON pode ser importado pela tela inicial; o arquivo precisa ter até 5 MB e passar pela validação de estrutura antes de substituir a sessão local.
 
+As chamadas aos provedores têm limite de 90 segundos e tratam respostas vazias ou malformadas como falha. Imagens de até 15 MB em formatos compatíveis são reduzidas e processadas no navegador. Elas não são enviadas à IA nem incluídas no backup; se a página for fechada ou recarregada, será preciso selecioná-las novamente.
+
 ## Dados e privacidade
 
 As respostas, notas opcionais e capítulos editados podem conter dados pessoais e informações sensíveis. O app os salva automaticamente em `localStorage` para permitir a recuperação no mesmo perfil e navegador. Esse backup permanece ali até ser substituído ou apagado nos dados do site pelo usuário. A exportação JSON cria outra cópia local, que passa a ser responsabilidade de quem a baixou. O backup pode ser reimportado pela tela inicial; a validação limita o arquivo a 5 MB e verifica versão, campos e tamanhos antes de gravar.
@@ -48,12 +50,12 @@ Antes de usar, escolha uma chave adequada para testes, confira as condições e 
 
 ## Limitações conhecidas
 
-- A sessão salva é vinculada ao navegador e ao perfil local; não sincroniza entre dispositivos.
-- O backup automático versão 2 guarda idioma, nome, respostas, notas por capítulo, manuscritos editados, título, subtítulo, dedicatória e data. Fotos, capa e chave de API não são persistidas nele. A importação valida formato, campos e limites de tamanho; armazenamento local indisponível ou backup inválido é informado na interface.
+- A sessão salva é vinculada ao navegador e ao perfil local; não sincroniza entre dispositivos. A cópia permanece até ser apagada manualmente ou substituída por outra sessão.
+- O backup automático versão 2 guarda idioma, nome, respostas, notas por capítulo, manuscritos editados, título, subtítulo, dedicatória e data. Fotos, capa e chave de API não são persistidas; fotos e capa precisam ser selecionadas novamente após recarregar a página. A importação valida formato, campos e limites de tamanho; armazenamento local indisponível ou backup inválido é informado na interface.
 - A integração com os provedores é feita direto do navegador. Disponibilidade, cobrança, limites e modelos podem mudar.
 - A interface tem quatro idiomas; alguns metadados do DOCX incluem francês, mas isso não significa que o app tenha tradução completa para francês.
 - Há testes locais para a estrutura do ZIP/DOCX, metadados, backup e nome do arquivo. Eles não chamam provedores de IA nem validam a qualidade literária de cada modelo.
-- Não há telemetria de uso. O projeto segue sendo um protótipo e requer revisão humana do conteúdo e validação manual com o provedor escolhido.
+- Não há telemetria de uso. O projeto segue sendo um protótipo: a avaliação com saídas reais dos provedores e o teste moderado de usabilidade ainda não foram concluídos. Todo capítulo requer revisão humana.
 
 ## Executar localmente
 

@@ -634,7 +634,8 @@ const LANGS = {
       coverError: 'Não foi possível gerar a capa. Tente novamente ou use sua própria foto.',
       coverPrivacyNotice: 'A capa é solicitada a um serviço externo. O pedido não inclui seu nome nem suas respostas.',
       photoLabel: '📷 Adicionar fotos a este capítulo (opcional)',
-      photoHint: 'Clique ou arraste imagens aqui — serão aplicadas em sépia no livro',
+      photoHint: 'As fotos são processadas neste navegador, entram no livro e não são enviadas à IA nem incluídas no backup. Se fechar ou atualizar a página, será preciso selecioná-las novamente.',
+      imageError: 'Não foi possível processar esta imagem. Use um formato compatível e arquivo de até 15 MB.',
       chapterNoteLabel: 'Contexto que este material ajudou a lembrar (opcional)',
       chapterNoteHint: 'Escreva só o contexto que quer usar. A nota será salva no backup e enviada à IA ao gerar ou reescrever este capítulo; a foto ou o documento não será enviado.',
       chapterNoteSource: 'Contexto adicional informado',
@@ -756,7 +757,8 @@ const LANGS = {
       coverError: 'Could not generate cover. Try again or upload your own photo.',
       coverPrivacyNotice: 'The cover request goes to an external service. It does not include your name or answers.',
       photoLabel: '📷 Add photos to this chapter (optional)',
-      photoHint: 'Click or drag images here — they will appear in sepia in the book',
+      photoHint: 'Photos are processed in this browser, included in the book, and not sent to AI or saved in the backup. If you close or reload the page, select them again.',
+      imageError: 'This image could not be processed. Use a supported format up to 15 MB.',
       chapterNoteLabel: 'Context this material helped you remember (optional)',
       chapterNoteHint: 'Write only the context you want to use. The note is saved in the backup and sent to the AI when generating or rewriting this chapter; the photo or document is not sent.',
       chapterNoteSource: 'Additional context supplied',
@@ -878,7 +880,8 @@ const LANGS = {
       coverError: 'Cover konnte nicht erstellt werden. Versuchen Sie es erneut oder laden Sie Ihr eigenes Foto hoch.',
       coverPrivacyNotice: 'Die Coveranfrage geht an einen externen Dienst. Ihr Name und Ihre Antworten werden nicht mitgesendet.',
       photoLabel: '📷 Fotos zu diesem Kapitel hinzufügen (optional)',
-      photoHint: 'Klicken oder ziehen Sie Bilder hierher — sie erscheinen im Buch in Sepia',
+      photoHint: 'Fotos werden in diesem Browser verarbeitet, ins Buch eingefügt und weder an die KI gesendet noch in der Sicherung gespeichert. Nach dem Schließen oder Neuladen müssen Sie sie erneut auswählen.',
+      imageError: 'Dieses Bild konnte nicht verarbeitet werden. Verwenden Sie ein unterstütztes Format mit höchstens 15 MB.',
       chapterNoteLabel: 'Kontext, an den Sie sich durch dieses Material erinnern (optional)',
       chapterNoteHint: 'Schreiben Sie nur den gewünschten Kontext auf. Diese Notiz wird im Backup gespeichert und beim Erstellen oder Überarbeiten dieses Kapitels an die KI gesendet; das Foto oder Dokument wird nicht gesendet.',
       chapterNoteSource: 'Zusätzlicher Kontext der Person',
@@ -1000,7 +1003,8 @@ const LANGS = {
       coverError: 'No se pudo generar la portada. Intenta de nuevo o usa tu propia foto.',
       coverPrivacyNotice: 'La solicitud de portada va a un servicio externo. No incluye tu nombre ni tus respuestas.',
       photoLabel: '📷 Agregar fotos a este capítulo (opcional)',
-      photoHint: 'Haz clic o arrastra imágenes aquí — aparecerán en sepia en el libro',
+      photoHint: 'Las fotos se procesan en este navegador, se incluyen en el libro y no se envían a la IA ni se guardan en la copia. Si cierras o recargas la página, tendrás que seleccionarlas otra vez.',
+      imageError: 'No se pudo procesar esta imagen. Usa un formato compatible de hasta 15 MB.',
       chapterNoteLabel: 'Contexto que este material te ayudó a recordar (opcional)',
       chapterNoteHint: 'Escribe solo el contexto que quieras usar. La nota se guarda en la copia y se envía a la IA al generar o reescribir este capítulo; la foto o el documento no se envía.',
       chapterNoteSource: 'Contexto adicional aportado',
@@ -1238,13 +1242,38 @@ function showError(msg) {
 // ═══════════════════════════════════════════════════════
 //  AI CALLS
 // ═══════════════════════════════════════════════════════
+const AI_REQUEST_TIMEOUT_MS = 90000;
+
+async function requestAIJson(url, options) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      const providerMessage = payload?.error?.message || payload?.message;
+      const safeMessage = typeof providerMessage === 'string' ? providerMessage.slice(0, 300) : response.statusText;
+      throw new Error(`AI provider request failed (${response.status}): ${safeMessage || 'unknown error'}`);
+    }
+    if (!payload || typeof payload !== 'object') throw new Error('AI provider returned an invalid response');
+    return payload;
+  } catch (error) {
+    if (controller.signal.aborted) throw new Error('AI request timed out');
+    if (error instanceof Error && error.message.startsWith('AI provider')) throw error;
+    throw new Error('Could not reach the selected AI provider');
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 async function callAI(systemPrompt, userMessage, maxTokens = 600) {
   const p = state.provider;
   const key = state.apiKey;
+  if (!PROVIDERS[p] || typeof key !== 'string' || !key.trim()) throw new Error('Choose a provider and enter its API key');
 
   if (p === 'gemini') {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${PROVIDERS.gemini.model}:generateContent`;
-    const res = await fetch(url, {
+    const data = await requestAIJson(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
@@ -1253,13 +1282,13 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
         generationConfig: { maxOutputTokens: maxTokens },
       }),
     });
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || res.statusText); }
-    const data = await res.json();
-    return data.candidates[0].content.parts[0].text.trim();
+    const text = data.candidates?.[0]?.content?.parts?.map(part => part.text).filter(Boolean).join('').trim();
+    if (!text) throw new Error('AI provider returned no text');
+    return text;
   }
 
   if (p === 'groq') {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const data = await requestAIJson('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
       body: JSON.stringify({
@@ -1268,13 +1297,13 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }],
       }),
     });
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || res.statusText); }
-    const data = await res.json();
-    return data.choices[0].message.content.trim();
+    const text = data.choices?.[0]?.message?.content;
+    if (typeof text !== 'string' || !text.trim()) throw new Error('AI provider returned no text');
+    return text.trim();
   }
 
   if (p === 'openai') {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    const data = await requestAIJson('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
       body: JSON.stringify({
@@ -1284,12 +1313,13 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }],
       }),
     });
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || res.statusText); }
-    const data = await res.json();
-    return data.choices[0].message.content.trim();
+    const text = data.choices?.[0]?.message?.content;
+    if (typeof text !== 'string' || !text.trim()) throw new Error('AI provider returned no text');
+    return text.trim();
   }
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  if (p !== 'claude') throw new Error('Selected AI provider is not supported');
+  const data = await requestAIJson('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1304,9 +1334,9 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
       messages: [{ role: 'user', content: userMessage }],
     }),
   });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || res.statusText); }
-  const data = await res.json();
-  return data.content[0].text.trim();
+  const text = data.content?.filter(block => block.type === 'text').map(block => block.text).filter(Boolean).join('').trim();
+  if (!text) throw new Error('AI provider returned no text');
+  return text;
 }
 
 async function getFollowupQuestion(chapterTitle, originalQuestion, answer) {
@@ -1414,12 +1444,19 @@ Calidad narrativa:
 //  IMAGE PROCESSING
 // ═══════════════════════════════════════════════════════
 async function fileToSepiaBase64(file, maxPx = 1200) {
-  return new Promise((resolve) => {
+  const maxBytes = 15 * 1024 * 1024;
+  const supportedTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif', 'image/bmp']);
+  if (!file || !supportedTypes.has(file.type) || file.size <= 0 || file.size > maxBytes) {
+    throw new Error('Unsupported or oversized image');
+  }
+
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
         let w = img.width, h = img.height;
+        if (!w || !h || w * h > 40000000) { reject(new Error('Image dimensions exceed the supported limit')); return; }
         if (w > maxPx || h > maxPx) {
           if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
           else       { w = Math.round(w * maxPx / h); h = maxPx; }
@@ -1427,6 +1464,7 @@ async function fileToSepiaBase64(file, maxPx = 1200) {
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
         const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Could not process image')); return; }
         ctx.drawImage(img, 0, 0, w, h);
         const imageData = ctx.getImageData(0, 0, w, h);
         const d = imageData.data;
@@ -1439,8 +1477,10 @@ async function fileToSepiaBase64(file, maxPx = 1200) {
         ctx.putImageData(imageData, 0, 0);
         resolve(canvas.toDataURL('image/jpeg', 0.88));
       };
+      img.onerror = () => reject(new Error('Could not decode image'));
       img.src = e.target.result;
     };
+    reader.onerror = () => reject(new Error('Could not read image'));
     reader.readAsDataURL(file);
   });
 }
@@ -1486,16 +1526,20 @@ async function fetchCoverImage() {
     'vintage sepia memoir book cover, warm candlelight, handwritten pages, old photographs, soft bokeh, painterly, nostalgic, no text, no identifiable person'
   );
   const url = `https://image.pollinations.ai/prompt/${prompt}?width=800&height=1100&nologo=true&seed=${Date.now()}`;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000);
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: controller.signal });
     if (!res.ok) return null;
     const blob = await res.blob();
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = e => resolve(e.target.result);
+      reader.onerror = () => resolve(null);
       reader.readAsDataURL(blob);
     });
   } catch { return null; }
+  finally { clearTimeout(timeoutId); }
 }
 
 function base64ToBytes(b64) {
@@ -2232,29 +2276,29 @@ function renderQuestionScreen() {
       img.className = 'photo-thumb'; img.src = b64; thumbs.appendChild(img);
     }
   }
-  $('photo-input').addEventListener('change', async (e) => {
-    const files = Array.from(e.target.files);
-    for (const file of files) {
+  async function addPhoto(file) {
+    try {
       const b64 = await fileToSepiaBase64(file, 1200);
       if (!state.photos[chapIdx]) state.photos[chapIdx] = [];
       state.photos[chapIdx].push(b64);
       const img = document.createElement('img');
-      img.className = 'photo-thumb'; img.src = b64; thumbs.appendChild(img);
+      img.className = 'photo-thumb'; img.src = b64; img.alt = ui.photoLabel;
+      thumbs.appendChild(img);
+    } catch (error) {
+      showError(ui.imageError);
     }
+  }
+  $('photo-input').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    for (const file of files) await addPhoto(file);
     e.target.value = '';
   });
   $('photo-drop').addEventListener('dragover', e => { e.preventDefault(); $('photo-drop').style.borderColor = 'var(--amber)'; });
   $('photo-drop').addEventListener('dragleave', () => { $('photo-drop').style.borderColor = ''; });
   $('photo-drop').addEventListener('drop', async (e) => {
     e.preventDefault(); $('photo-drop').style.borderColor = '';
-    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-    for (const file of files) {
-      const b64 = await fileToSepiaBase64(file, 1200);
-      if (!state.photos[chapIdx]) state.photos[chapIdx] = [];
-      state.photos[chapIdx].push(b64);
-      const img = document.createElement('img');
-      img.className = 'photo-thumb'; img.src = b64; thumbs.appendChild(img);
-    }
+    const files = Array.from(e.dataTransfer.files || []);
+    for (const file of files) await addPhoto(file);
   });
 }
 
@@ -2395,9 +2439,14 @@ function renderGenerateScreen() {
   $('cover-upload-input').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const b64 = await fileToSepiaBase64(file, 800);
-    showCoverPreview(b64);
-    e.target.value = '';
+    try {
+      const b64 = await fileToSepiaBase64(file, 800);
+      showCoverPreview(b64);
+    } catch (error) {
+      showError(ui.imageError);
+    } finally {
+      e.target.value = '';
+    }
   });
   if (state.coverImageB64) showCoverPreview(state.coverImageB64);
 

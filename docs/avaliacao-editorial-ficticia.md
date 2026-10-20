@@ -72,6 +72,14 @@ O texto preserva a aproximação do ano, mantém a incerteza sobre a caixa e nã
 - O papel antigo e a mensagem da prima são pistas sem data ou confirmação independente; não devem virar fatos conclusivos.
 - Não inventar rotina de trabalho, pagamento, idade exata, conserto, conversa com o técnico, sentimentos, clima ou lição de vida.
 
+**Rascunho de referência editorial:**
+
+> Trabalhei na padaria do meu tio durante a adolescência. Não tenho certeza se comecei aos quinze ou dezesseis anos; minha prima diz que eu já tinha dezesseis. Eu ajudava no balcão e fazia entregas na rua de trás.
+>
+> Uma manhã, o forno parou. Meu tio pediu que eu chamasse um técnico. Saí pelo portão com uma chave que não servia para a máquina. Não lembro o dia da semana nem se o conserto foi feito naquele dia. Também não sei se a padaria se chamava Pão da Praça ou Pão da Praça Nova. Um papel antigo menciona Pão da Praça, mas não tem data, e a mensagem da minha prima não resolve a dúvida sobre a idade.
+
+Este rascunho é uma referência humana de fidelidade, não uma resposta ideal obrigatória. Outra redação pode ser mais natural, desde que preserve as mesmas incertezas e não acrescente fatos.
+
 ## Rubrica de leitura
 
 Dê 0, 1 ou 2 pontos por dimensão. Some até 12 pontos, mas registre separadamente qualquer invenção grave.
