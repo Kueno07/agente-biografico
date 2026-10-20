@@ -1081,8 +1081,8 @@ const state = {
 const PROVIDERS = {
   groq:   { label: 'Groq (GPT-OSS 120B)', placeholder: 'gsk_...', model: 'openai/gpt-oss-120b', keyUrl: 'https://console.groq.com/keys' },
   gemini: { label: 'Google Gemini 3.8 Flash', placeholder: 'AIza...', model: 'gemini-3.8-flash', keyUrl: 'https://aistudio.google.com/apikey' },
-  openai: { label: 'OpenAI (GPT-4o mini)', placeholder: 'sk-...', model: 'gpt-4o-mini', keyUrl: 'https://platform.openai.com/api-keys' },
-  claude: { label: 'Claude Sonnet 4.6', placeholder: 'sk-ant-...', model: 'claude-sonnet-4-6', keyUrl: 'https://console.anthropic.com/settings/keys' },
+  openai: { label: 'OpenAI (GPT-5.6 Sol)', placeholder: 'sk-...', model: 'gpt-5.6-sol', keyUrl: 'https://platform.openai.com/api-keys' },
+  claude: { label: 'Claude Sonnet 5.5', placeholder: 'sk-ant-...', model: 'claude-sonnet-5-5', keyUrl: 'https://console.anthropic.com/settings/keys' },
 };
 
 // Onboarding: criar chaves de API com Groq ou Gemini
@@ -1279,7 +1279,8 @@ async function callAI(systemPrompt, userMessage, maxTokens = 600) {
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
       body: JSON.stringify({
         model: PROVIDERS.openai.model,
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
+        reasoning_effort: maxTokens > 1000 ? 'low' : 'none',
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }],
       }),
     });

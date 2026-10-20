@@ -17,6 +17,7 @@ Protótipo web que conduz uma entrevista sobre a vida de uma pessoa e transforma
 - Inclusão opcional de fotos, processadas no navegador com efeito sépia e composição em mosaico.
 - Criação opcional de capa por serviço externo ou uso de uma imagem própria.
 - Recuperação local de respostas e rascunhos editados no mesmo navegador, com exportação e importação de backup JSON versão 2.
+- Protocolo editorial com dados fictícios para comparar fidelidade, tratamento de incerteza, voz e clichês: [docs/avaliacao-editorial-ficticia.md](docs/avaliacao-editorial-ficticia.md).
 
 O projeto nasceu como uma demonstração curta de como modelos de linguagem podem apoiar a preservação de histórias pessoais. O escopo é um protótipo de uso individual; não há conta, colaboração, sincronização ou operação de serviço.
 
@@ -74,6 +75,9 @@ Na revisão desta versão, um DOCX sintético foi aberto e exportado para PDF pe
 .
 ├── index.html  # interface, perguntas, chamadas de API e montagem do DOCX
 ├── README.md   # apresentação, arquitetura e limites
+├── ROADMAP.md  # fases e critérios de conclusão
+├── docs/       # protocolo de avaliação editorial fictícia
+│   └── avaliacao-editorial-ficticia.md
 └── LICENSE     # MIT
 ```
 
