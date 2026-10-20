@@ -28,6 +28,7 @@ function loadApplication() {
     Intl,
     setTimeout,
     clearTimeout,
+    AbortController,
     console,
     fetch: async (url, options) => {
       requests.push({ url, options });

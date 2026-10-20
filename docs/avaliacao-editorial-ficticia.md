@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Comparar a fidelidade e a qualidade narrativa do texto produzido pelos provedores habilitados no Agente Biográfico. Esta ficha é um protocolo de avaliação; nenhum modelo foi executado nem aprovado por ela até que os resultados sejam registrados.
+Comparar a fidelidade e a qualidade narrativa do texto produzido pelos provedores habilitados no Agente Biográfico. Esta ficha define o protocolo; execuções e resultados ficam nos relatórios por provedor. Executar o protocolo não significa aprovar o modelo.
 
 ## Entrada fixa
 
@@ -109,7 +109,9 @@ Uma falha grave impede recomendar o modelo para produção de livro sem correç�
 
 ## Estado desta avaliação
 
-- Status: preparada, ainda não executada com provedores.
+- Status: dois casos executados com Groq em 2026-10-20; revisão humana independente ainda pendente.
 - Dados: inteiramente fictícios.
-- Saídas, notas, custo e modelo efetivamente testado: não registrados.
+- Modelo executado: `openai/gpt-oss-120b`, conforme configuração do app.
+- Saídas e avaliação preliminar: [docs/avaliacao-editorial-groq-2026-10-20.md](avaliacao-editorial-groq-2026-10-20.md).
+- Custo: não conferido no painel de uso/faturamento do provedor.
 - Critério de conclusão: pelo menos dois casos fictícios por modelo, leitura humana das saídas originais e registro de falhas graves.

@@ -55,7 +55,7 @@ Antes de usar, escolha uma chave adequada para testes, confira as condições e 
 - A integração com os provedores é feita direto do navegador. Disponibilidade, cobrança, limites e modelos podem mudar.
 - A interface tem quatro idiomas; alguns metadados do DOCX incluem francês, mas isso não significa que o app tenha tradução completa para francês.
 - Há testes locais para a estrutura do ZIP/DOCX, metadados, backup e nome do arquivo. Eles não chamam provedores de IA nem validam a qualidade literária de cada modelo.
-- Não há telemetria de uso. O projeto segue sendo um protótipo: a avaliação com saídas reais dos provedores e o teste moderado de usabilidade ainda não foram concluídos. Todo capítulo requer revisão humana.
+- Não há telemetria de uso. Uma avaliação inicial com dois casos fictícios foi executada no Groq e encontrou acréscimos factuais, incluindo uma falha grave; consulte [o relatório](docs/avaliacao-editorial-groq-2026-10-20.md). Outros provedores, conferência de custo e teste moderado de usabilidade continuam pendentes. Todo capítulo requer revisão humana.
 
 ## Executar localmente
 
