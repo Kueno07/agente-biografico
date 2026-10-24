@@ -58,3 +58,25 @@
 As duas chamadas foram concluídas com respostas válidas. O modelo preservou várias incertezas, mas acrescentou detalhes plausíveis como se fossem lembranças. O segundo caso falha no critério de fidelidade e impede recomendar esta configuração para redigir capítulos sem revisão humana linha a linha.
 
 Esta pontuação é uma avaliação editorial preliminar feita durante a execução técnica. Ainda falta uma leitura humana independente e a conferência do custo/uso no painel Groq. O teste usa somente exemplos fictícios; não demonstra qualidade com histórias reais nem substitui revisão do manuscrito.
+
+## Segunda leitura editorial — 2026-10-24
+
+Recomparei as duas saídas com as respostas, notas e limites do protocolo. A leitura confirma as pontuações preliminares; não constitui aprovação humana independente nem teste com histórias reais.
+
+### Caso 1
+
+- **Acréscimo factual:** “Levei uma mochila vermelha” transforma “lembro de uma mochila vermelha” em posse e ação confirmadas.
+- **Interpretação sem fonte:** “a rotina ... se resumiu a esses trajetos” e “sem grandes marcas além...” restringem a semana a partir de informação que não foi dada.
+- **Resultado:** os fatos principais e as incertezas sobre mês, despedida e caixa permanecem, mas a narrativa não é fiel o bastante para entrar no livro sem revisão.
+
+### Caso 2
+
+- **Invenções concretas:** atender clientes, carregar sacolas de pão e acreditar que a chave serviria para a máquina não aparecem nas respostas.
+- **Uso indevido de pista:** o texto cita o papel como pista para “Pão da Praça”, mas a forma narrativa o aproxima de confirmação; a fonte não tem data e não resolve o nome.
+- **Resultado:** falha grave de fidelidade mantida. A prosa fluida aumenta o risco de detalhes inventados parecerem lembranças verdadeiras.
+
+### Veredito
+
+O prompt atual já proíbe explicitamente completar lacunas, inventar cenas ou converter incerteza em certeza, mas essas regras não impediram os acréscimos. O Groq GPT-OSS 120B não está aprovado para redigir capítulos de memórias com confiança. Se for usado em novos ensaios, usar dados fictícios; para histórias reais, manter comparação lado a lado com respostas e notas e revisar cada afirmação antes de aceitar o capítulo.
+
+Continuam pendentes: conferir uso/custo no painel Groq, testar outros provedores com os mesmos casos e fazer teste de usabilidade com uma pessoa. A chave usada no teste foi exposta na conversa e deve ser revogada antes de qualquer uso com dados reais.
