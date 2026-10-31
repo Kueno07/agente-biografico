@@ -995,6 +995,8 @@ const KEYGUIDE = {
 //  HELPERS
 // ═══════════════════════════════════════════════════════
 const $ = id => document.getElementById(id);
+// Escapa texto vindo do modelo ou do localStorage antes de interpolar em innerHTML.
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const screen = () => $('screen');
 const t = () => LANGS[state.lang].ui;
 const chapters = () => LANGS[state.lang].chapters;
@@ -1595,7 +1597,7 @@ function renderLangScreen() {
       banner.className = 'notice info';
       banner.style.cssText = 'margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;';
       banner.innerHTML = `
-        <span>💾 ${ui ? ui.backupFound : 'Session found'}: <strong>${b.authorName}</strong> — ${b.answers.length} respostas (${saved})</span>
+        <span>💾 ${ui ? ui.backupFound : 'Session found'}: <strong>${esc(b.authorName)}</strong> — ${b.answers.length} respostas (${saved})</span>
         <button id="restore-btn" class="btn btn-secondary" style="font-size:.82rem; padding:.4rem .9rem;">${ui ? ui.backupRestore : 'Restore'}</button>
       `;
       screen().prepend(banner);
@@ -1877,7 +1879,7 @@ async function handleNextClick(question, chapterTitle) {
       $('ai-response-zone').innerHTML = `
         <div class="ai-followup-wrap">
           <div class="ai-followup-label">${ui.aiAsksLabel}</div>
-          <div class="ai-followup-text">${fq}</div>
+          <div class="ai-followup-text">${esc(fq)}</div>
         </div>
       `;
       $('answer-label').style.display = 'none';
